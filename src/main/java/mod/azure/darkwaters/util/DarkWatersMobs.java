@@ -1,0 +1,54 @@
+package mod.azure.darkwaters.util;
+
+import mod.azure.darkwaters.DarkWatersMod;
+import mod.azure.darkwaters.entity.AberrationEntity;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+
+public class DarkWatersMobs {
+
+	public static final EntityType<AberrationEntity> ABERRATION = Registry.register(Registry.ENTITY_TYPE,
+			new Identifier(DarkWatersMod.MODID, "aberration"),
+			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, AberrationEntity::new)
+					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+
+//	public static final EntityType<ManarawEntity> MANARAW = Registry.register(Registry.ENTITY_TYPE,
+//			new Identifier(DarkWatersMod.MODID, "manaraw"),
+//			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ManarawEntity::new)
+//					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+//
+//	public static final EntityType<MohastEntity> MOHAST = Registry.register(Registry.ENTITY_TYPE,
+//			new Identifier(DarkWatersMod.MODID, "mohast"),
+//			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MohastEntity::new)
+//					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+//
+//	public static final EntityType<SightHunterEntity> SIGHT_HUNTER = Registry.register(Registry.ENTITY_TYPE,
+//			new Identifier(DarkWatersMod.MODID, "sight_hunter"),
+//			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SightHunterEntity::new)
+//					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+//
+//	public static final EntityType<CraekenEntity> CRAEKEN = Registry.register(Registry.ENTITY_TYPE,
+//			new Identifier(DarkWatersMod.MODID, "craeken"),
+//			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, CraekenEntity::new)
+//					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+//
+//	public static final EntityType<MiraidEntity> MIRAID = Registry.register(Registry.ENTITY_TYPE,
+//			new Identifier(DarkWatersMod.MODID, "miraid"),
+//			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MiraidEntity::new)
+//					.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+//
+//	public static final EntityType<MiraidHallucinationEntity> MIRAID_HALLUCINATION = Registry
+//			.register(Registry.ENTITY_TYPE, new Identifier(DarkWatersMod.MODID, "miraid_hallucination"),
+//					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MiraidHallucinationEntity::new)
+//							.dimensions(EntityDimensions.fixed(0.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4)
+//							.build());
+
+	public static void init() {
+		FabricDefaultAttributeRegistry.register(ABERRATION, AberrationEntity.createMobAttributes());
+	}
+}

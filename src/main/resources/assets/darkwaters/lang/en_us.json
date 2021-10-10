@@ -1,0 +1,19 @@
+{
+	"item.darkwaters.aberration_spawn_egg": "Aberration Spawn Egg",
+	"item.darkwaters.manaraw_spawn_egg": "Manaraw Spawn Egg",
+	"item.darkwaters.mohast_spawn_egg": "Mohast Spawn Egg",
+	"item.darkwaters.sighthunter_spawn_egg": "Sight Hunter Spawn Egg",
+	"item.darkwaters.craeken_spawn_egg": "Craeken Spawn Egg",
+	"item.darkwaters.miraid_spawn_egg": "Miraid Spawn Egg",
+	"entity.darkwaters.aberration": "Larval Aberration",
+	"entity.darkwaters.manaraw": "Manaraw",
+	"entity.darkwaters.mohast": "Mohast",
+	"entity.darkwaters.craeken": "Craeken",
+	"entity.darkwaters.miraid": "Miraid",
+	"entity.darkwaters.miraid_hallucination": "Miraid",
+	"entity.darkwaters.sight_hunter": "Sight Hunter",
+	"entity.darkwaters.rockets": "Rocket",
+	"entity.darkwaters.bullets": "Bullets",
+	"text.autoconfig.darkwaters.title": "Dark Waters Config",
+	"text.autoconfig.darkwaters.option.stats": "Mob Stat Settings"
+}

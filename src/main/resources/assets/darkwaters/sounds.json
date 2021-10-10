@@ -1,0 +1,5 @@
+{
+	"darkwaters.loading_end": {
+		"category": "music", "sounds": [{"darkwaters": "doom:loading_end"}]
+	}
+}

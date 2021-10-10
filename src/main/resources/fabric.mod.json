@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "darkwaters",
+	"version": "${version}",
+	"name": "Dark Waters",
+	"description": "If you hear the thunder....it's already too late.",
+	"authors": [
+		"AzureDoom",
+		"Batpixxler",
+		"Assasingus14"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/darkwaters/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"mod.azure.darkwaters.DarkWatersMod"
+		],
+		"client": [
+			"mod.azure.darkwaters.client.DarkWatersClient"
+		],
+		"modmenu": [
+			"mod.azure.darkwaters.config.DarkWatersModMenu"
+		]
+	},
+	"mixins": [
+		"darkwaters.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.11.3",
+		"fabric": "*",
+		"minecraft": "1.17.x",
+		"java": ">=16"
+	}
+}
