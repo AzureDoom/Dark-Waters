@@ -29,7 +29,7 @@ public class AberrationEntity extends BaseWaterEntity {
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-		this.goalSelector.add(3, new WaterAttackGoal(this, 1.0D, false, 2));
+		this.goalSelector.add(4, new WaterAttackGoal(this, 2));
 	}
 
 }

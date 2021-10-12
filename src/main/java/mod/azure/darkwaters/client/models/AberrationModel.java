@@ -19,7 +19,7 @@ public class AberrationModel extends AnimatedGeoModel<AberrationEntity> {
 
 	@Override
 	public Identifier getTextureLocation(AberrationEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "textures/entity/abberation_top.png");
+		return new Identifier(DarkWatersMod.MODID, "textures/entity/aberration.png");
 	}
 
 }
