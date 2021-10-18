@@ -1,5 +1,92 @@
 {
-	"darkwaters.loading_end": {
-		"category": "music", "sounds": [{"darkwaters": "doom:loading_end"}]
+	"darkwaters.abberation_aggro": {
+		"sounds": [{"name": "darkwaters:abberation_aggro"}]
+	},
+	"darkwaters.abberation_ambient": {
+		"sounds": [{"name": "darkwaters:abberation_ambient"}]
+	},
+	"darkwaters.abberation_attack": {
+		"sounds": [{"name": "darkwaters:abberation_attack"}]
+	},
+	"darkwaters.abberation_hurt": {
+		"sounds": [{"name": "darkwaters:abberation_hurt"}]
+	},
+	"darkwaters.craeken_attack": {
+		"sounds": [{"name": "darkwaters:craeken_attack"}]
+	},
+	"darkwaters.craeken_attack2": {
+		"sounds": [{"name": "darkwaters:craeken_attack2"}]
+	},
+	"darkwaters.craeken_hurt1": {
+		"sounds": [{"name": "darkwaters:craeken_hurt1"}]
+	},
+	"darkwaters.craeken_hurt2": {
+		"sounds": [{"name": "darkwaters:craeken_hurt2"}]
+	},
+	"darkwaters.hallucination_hum": {
+		"sounds": [{"name": "darkwaters:hallucination_hum"}]
+	},
+	"darkwaters.manaraw_aggro": {
+		"sounds": [{"name": "darkwaters:manaraw_aggro"}]
+	},
+	"darkwaters.manaraw_aggro2": {
+		"sounds": [{"name": "darkwaters:manaraw_aggro2"}]
+	},
+	"darkwaters.manaraw_ambient1": {
+		"sounds": [{"name": "darkwaters:manaraw_ambient1"}]
+	},
+	"darkwaters.manaraw_ambient2": {
+		"sounds": [{"name": "darkwaters:manaraw_ambient2"}]
+	},
+	"darkwaters.manaraw_attack": {
+		"sounds": [{"name": "darkwaters:manaraw_attack"}]
+	},
+	"darkwaters.manaraw_hurt": {
+		"sounds": [{"name": "darkwaters:manaraw_hurt"}]
+	},
+	"darkwaters.miraid_aggroambient": {
+		"sounds": [{"name": "darkwaters:miraid_aggroambient"}]
+	},
+	"darkwaters.miraid_hallucination_hurt": {
+		"sounds": [{"name": "darkwaters:miraid_hallucination_hurt"}]
+	},
+	"darkwaters.mohast_ambient1": {
+		"sounds": [{"name": "darkwaters:mohast_ambient1"}]
+	},
+	"darkwaters.mohast_ambient2": {
+		"sounds": [{"name": "darkwaters:mohast_ambient2"}]
+	},
+	"darkwaters.mohast_hurt_attack": {
+		"sounds": [{"name": "darkwaters:mohast_hurt_attack"}]
+	},
+	"darkwaters.sighthunter_aggro": {
+		"sounds": [{"name": "darkwaters:sighthunter_aggro"}]
+	},
+	"darkwaters.sighthunter_aggroambient": {
+		"sounds": [{"name": "darkwaters:sighthunter_aggroambient"}]
+	},
+	"darkwaters.sighthunter_aggroambient2": {
+		"sounds": [{"name": "darkwaters:sighthunter_aggroambient2"}]
+	},
+	"darkwaters.sighthunter_attack_hurt": {
+		"sounds": [{"name": "darkwaters:sighthunter_attack_hurt"}]
+	},
+	"darkwaters.storm_ambient1": {
+		"sounds": [{"name": "darkwaters:storm_ambient1"}]
+	},
+	"darkwaters.storm_ambient2": {
+		"sounds": [{"name": "darkwaters:storm_ambient2"}]
+	},
+	"darkwaters.storm_ambient3": {
+		"sounds": [{"name": "darkwaters:storm_ambient3"}]
+	},
+	"darkwaters.storm_beginning": {
+		"sounds": [{"name": "darkwaters:storm_beginning"}]
+	},
+	"darkwaters.storm_beginning2": {
+		"sounds": [{"name": "darkwaters:storm_beginning2"}]
+	},
+	"darkwaters.storm_end": {
+		"sounds": [{"name": "darkwaters:storm_end"}]
 	}
 }

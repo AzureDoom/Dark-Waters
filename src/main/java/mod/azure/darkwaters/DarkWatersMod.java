@@ -2,6 +2,7 @@ package mod.azure.darkwaters;
 
 import mod.azure.darkwaters.items.DarkSpawnEgg;
 import mod.azure.darkwaters.util.DarkWatersMobs;
+import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -10,10 +11,12 @@ public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
 	public static DarkWatersMobs MOBS;
+	public static DarkWatersSounds SOUNDS;
 
 	@Override
 	public void onInitialize() {
 		MOBS = new DarkWatersMobs();
+		SOUNDS = new DarkWatersSounds();
 		Registry.register(Registry.ITEM, new Identifier(MODID, "aberration_spawn_egg"),
 				new DarkSpawnEgg(DarkWatersMobs.ABERRATION, 0x150056, 0x826ccc));
 		Registry.register(Registry.ITEM, new Identifier(MODID, "manaraw_spawn_egg"),
