@@ -162,7 +162,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements IAnimatable,
 
 	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerWorldAccess world,
 			SpawnReason spawnReason, BlockPos pos, Random random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel()) {
+		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()) {
 			Optional<RegistryKey<Biome>> optional = world.getBiomeKey(pos);
 			return (!Objects.equals(optional, Optional.of(BiomeKeys.DEEP_OCEAN))) && ((World) world).isThundering()
 					&& world.getFluidState(pos).isIn(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
