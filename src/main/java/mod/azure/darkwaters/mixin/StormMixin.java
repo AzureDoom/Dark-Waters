@@ -36,13 +36,13 @@ public abstract class StormMixin extends LivingEntity {
 		if (world.isThundering()
 				&& world.getBiomeAccess().getBiome(getBlockPos()).getCategory().equals(Category.OCEAN)) {
 			cooldown++;
-			this.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 600, 1));
+			this.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 600, 1, false, false, false));
 			if (this.cooldown == 5) {
 				if (!this.isSilent()) {
 					this.world.playSound((PlayerEntity) null, this.getX(), this.getY(), this.getZ(),
 							r == 1 ? DarkWatersSounds.STORM_ABIENT1
 									: r == 2 ? DarkWatersSounds.STORM_ABIENT2 : DarkWatersSounds.STORM_ABIENT3,
-							SoundCategory.MUSIC, 0.75F, 1.0F);
+							SoundCategory.MUSIC, world.isThundering() ? 0.75F : 0.0F, 1.0F);
 				}
 				this.cooldown = -500;
 			}
