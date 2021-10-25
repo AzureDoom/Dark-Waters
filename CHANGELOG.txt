@@ -1,5 +1,4 @@
-v.0.0.2
+v.0.0.3
 
-- Fixed rendering of some mobs.
-- Started work on hitboxes, still work to be done as some will need multihitboxes.
-- No longer using Blindness effect, using a newly created effect call The Storm.
+- Compressed sounds
+- Mobs have sounds now!
