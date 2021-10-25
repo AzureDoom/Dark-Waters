@@ -3,6 +3,7 @@ package mod.azure.darkwaters.entity;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.SplittableRandom;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
@@ -45,14 +46,8 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class BaseWaterEntity extends WaterCreatureEntity implements IAnimatable, Angerable {
+public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
 	private static final TrackedData<Integer> ANGER_TIME = DataTracker.registerData(BaseWaterEntity.class,
 			TrackedDataHandlerRegistry.INTEGER);
@@ -60,27 +55,14 @@ public class BaseWaterEntity extends WaterCreatureEntity implements IAnimatable,
 			TrackedDataHandlerRegistry.INTEGER);
 	private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
 	private UUID targetUuid;
-	private AnimationFactory factory = new AnimationFactory(this);
+	public SplittableRandom myrandom = new SplittableRandom();
+	public int r = myrandom.nextInt(0, 3);
 
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
 		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
 		this.lookControl = new AquaticLookControl(this, 10);
 		this.ignoreCameraFrustum = true;
-	}
-
-	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		return PlayState.CONTINUE;
-	}
-
-	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<BaseWaterEntity>(this, "controller", 0, this::predicate));
-	}
-
-	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
 	}
 
 	@Override
