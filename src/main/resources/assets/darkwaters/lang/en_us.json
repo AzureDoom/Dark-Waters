@@ -14,6 +14,7 @@
 	"entity.darkwaters.sight_hunter": "Sight Hunter",
 	"entity.darkwaters.rockets": "Rocket",
 	"entity.darkwaters.bullets": "Bullets",
+	"effect.darkwaters.storm_darkness": "The Storm",
 	"text.autoconfig.darkwaters.title": "Dark Waters Config",
 	"text.autoconfig.darkwaters.option.stats": "Mob Stat Settings"
 }

@@ -7,12 +7,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
@@ -36,7 +36,7 @@ public abstract class StormMixin extends LivingEntity {
 		if (world.isThundering()
 				&& world.getBiomeAccess().getBiome(getBlockPos()).getCategory().equals(Category.OCEAN)) {
 			cooldown++;
-			this.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 600, 1, false, false, false));
+			this.addStatusEffect(new StatusEffectInstance(DarkWatersMod.STORMDARKNESS, 600, 0, true, false, false));
 			if (this.cooldown == 5) {
 				if (!this.isSilent()) {
 					this.world.playSound((PlayerEntity) null, this.getX(), this.getY(), this.getZ(),

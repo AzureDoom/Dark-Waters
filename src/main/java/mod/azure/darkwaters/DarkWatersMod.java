@@ -1,9 +1,14 @@
 package mod.azure.darkwaters;
 
+import java.awt.Color;
+
+import mod.azure.darkwaters.effect.StormDarknessEffect;
 import mod.azure.darkwaters.items.DarkSpawnEgg;
 import mod.azure.darkwaters.util.DarkWatersMobs;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -12,6 +17,8 @@ public class DarkWatersMod implements ModInitializer {
 	public static final String MODID = "darkwaters";
 	public static DarkWatersMobs MOBS;
 	public static DarkWatersSounds SOUNDS;
+	public static final StatusEffect STORMDARKNESS = new StormDarknessEffect(StatusEffectType.BENEFICIAL,
+			new Color(0, 0, 0).getRGB());
 
 	@Override
 	public void onInitialize() {
@@ -29,6 +36,7 @@ public class DarkWatersMod implements ModInitializer {
 				new DarkSpawnEgg(DarkWatersMobs.CRAEKEN, 0xada7a2, 0xcee3e3));
 		Registry.register(Registry.ITEM, new Identifier(MODID, "miraid_spawn_egg"),
 				new DarkSpawnEgg(DarkWatersMobs.MIRAID, 0x5d5d6e, 0xd6d6d6));
+		Registry.register(Registry.STATUS_EFFECT, new Identifier(MODID, "storm_darkness"), STORMDARKNESS);
 		DarkWatersMobs.init();
 	}
 }
