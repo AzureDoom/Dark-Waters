@@ -46,7 +46,7 @@ public class DarkWatersMobs {
 	public static final EntityType<MiraidEntity> MIRAID = Registry.register(Registry.ENTITY_TYPE,
 			new Identifier(DarkWatersMod.MODID, "miraid"),
 			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MiraidEntity::new)
-					.dimensions(EntityDimensions.fixed(9.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+					.dimensions(EntityDimensions.fixed(6.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
 
 	public static final EntityType<MiraidHallucinationEntity> MIRAID_HALLUCINATION = Registry
 			.register(Registry.ENTITY_TYPE, new Identifier(DarkWatersMod.MODID, "miraid_hallucination"),

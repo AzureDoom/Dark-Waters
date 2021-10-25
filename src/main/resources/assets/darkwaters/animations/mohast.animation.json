@@ -2,7 +2,102 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"idle": {
-			"loop": true
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, "1+math.sin(query.anim_time*180)*1", 0]
+					},
+					"position": {
+						"vector": [0, "1+math.sin(query.anim_time*180)*1", 0]
+					}
+				},
+				"tail00": {
+					"rotation": {
+						"vector": [0, "2+math.sin(query.anim_time*180)*-2", 0]
+					}
+				},
+				"tail01": {
+					"rotation": {
+						"vector": [0, "-2+math.cos(query.anim_time*180)*2", 0]
+					}
+				},
+				"tail02": {
+					"rotation": {
+						"vector": [0, "2+math.sin(query.anim_time*180)*-2", 0]
+					}
+				},
+				"lLowJaw": {
+					"rotation": {
+						"vector": ["20+math.sin(query.anim_time*180)*10", "-8+math.cos(query.anim_time*180)*4", 0]
+					}
+				},
+				"rLowJaw": {
+					"rotation": {
+						"vector": ["20+math.sin(query.anim_time*180)*10", "8+math.cos(query.anim_time*180)*-4", 0]
+					}
+				},
+				"lWing1": {
+					"rotation": {
+						"vector": [0, 0, "10+math.sin(query.anim_time*180)*10"]
+					}
+				},
+				"rWing1": {
+					"rotation": {
+						"vector": [0, 0, "-10+math.sin(query.anim_time*180)*-10"]
+					}
+				}
+			}
+		},
+		"moving": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": [0, "1+math.sin(query.anim_time*360)*1", 0]
+					},
+					"position": {
+						"vector": [0, "1+math.sin(query.anim_time*360)*1", 0]
+					}
+				},
+				"tail00": {
+					"rotation": {
+						"vector": [0, "math.sin(query.anim_time*360)*4", 0]
+					}
+				},
+				"tail01": {
+					"rotation": {
+						"vector": [0, "math.cos(query.anim_time*360)*4", 0]
+					}
+				},
+				"tail02": {
+					"rotation": {
+						"vector": [0, "math.sin(query.anim_time*360)*4", 0]
+					}
+				},
+				"lLowJaw": {
+					"rotation": {
+						"vector": ["20+math.sin(query.anim_time*360)*10", "-8+math.cos(query.anim_time*360)*4", 0]
+					}
+				},
+				"rLowJaw": {
+					"rotation": {
+						"vector": ["20+math.sin(query.anim_time*360)*10", "8+math.cos(query.anim_time*360)*-4", 0]
+					}
+				},
+				"lWing1": {
+					"rotation": {
+						"vector": [0, 0, "20+math.sin(query.anim_time*360)*20"]
+					}
+				},
+				"rWing1": {
+					"rotation": {
+						"vector": [0, 0, "-20+math.sin(query.anim_time*360)*-20"]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

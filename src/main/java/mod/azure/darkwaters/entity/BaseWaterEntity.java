@@ -53,6 +53,8 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 			TrackedDataHandlerRegistry.INTEGER);
 	public static final TrackedData<Integer> STATE = DataTracker.registerData(BaseWaterEntity.class,
 			TrackedDataHandlerRegistry.INTEGER);
+	public static final TrackedData<Integer> MOVING = DataTracker.registerData(BaseWaterEntity.class,
+			TrackedDataHandlerRegistry.INTEGER);
 	private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
 	private UUID targetUuid;
 	public SplittableRandom myrandom = new SplittableRandom();
@@ -106,11 +108,20 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		this.dataTracker.set(STATE, time);
 	}
 
+	public int getMovingState() {
+		return this.dataTracker.get(MOVING);
+	}
+
+	public void setMovingState(int time) {
+		this.dataTracker.set(MOVING, time);
+	}
+
 	@Override
 	protected void initDataTracker() {
 		super.initDataTracker();
 		this.dataTracker.startTracking(ANGER_TIME, 0);
 		this.dataTracker.startTracking(STATE, 0);
+		this.dataTracker.startTracking(MOVING, 0);
 	}
 
 	@Override
