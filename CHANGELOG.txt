@@ -1,4 +1,5 @@
-v.0.0.1
+v.0.0.2
 
-- First beta, mobs stil WIP and do not spawn naturally. 
-- Thunder storms will give blindness if you are in the ocean.
+- Fixed rendering of some mobs.
+- Started work on hitboxes, still work to be done as some will need multihitboxes.
+- No longer using Blindness effect, using a newly created effect call The Storm.
