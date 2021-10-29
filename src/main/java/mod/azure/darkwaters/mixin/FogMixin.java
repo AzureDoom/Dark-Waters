@@ -13,6 +13,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 
 @Mixin(BackgroundRenderer.class)
@@ -24,7 +25,9 @@ public class FogMixin {
 		Entity entity = camera.getFocusedEntity();
 		float y;
 		float ab;
-		if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(DarkWatersMod.STORMDARKNESS)) {
+		if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(DarkWatersMod.STORMDARKNESS)
+				&& !((PlayerEntity) camera.getFocusedEntity()).isSpectator()
+				&& !((PlayerEntity) camera.getFocusedEntity()).isCreative()) {
 			int m = ((LivingEntity) entity).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
 			float n = MathHelper.lerp(Math.min(1.0F, (float) m / 20.0F), viewDistance, 10.0F);
 			if (fogType == BackgroundRenderer.FogType.FOG_SKY) {
@@ -47,7 +50,9 @@ public class FogMixin {
 		double d = (camera.getPos().y - (double) world.getBottomY())
 				* world.getLevelProperties().getHorizonShadingRatio();
 		if (camera.getFocusedEntity() instanceof LivingEntity
-				&& ((LivingEntity) camera.getFocusedEntity()).hasStatusEffect(DarkWatersMod.STORMDARKNESS)) {
+				&& ((LivingEntity) camera.getFocusedEntity()).hasStatusEffect(DarkWatersMod.STORMDARKNESS)
+				&& !((PlayerEntity) camera.getFocusedEntity()).isSpectator()
+				&& !((PlayerEntity) camera.getFocusedEntity()).isCreative()) {
 			af = ((LivingEntity) camera.getFocusedEntity()).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
 			if (af < 20) {
 				d *= (double) (1.0F - (float) af / 10.0F);
