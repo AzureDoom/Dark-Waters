@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import mod.azure.darkwaters.network.EntityPacket;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +17,6 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.AquaticLookControl;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.goal.ChaseBoatGoal;
 import net.minecraft.entity.ai.goal.FollowTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
@@ -35,6 +35,8 @@ import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
+import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.BlockPos;
@@ -62,7 +64,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, true);
 		this.lookControl = new AquaticLookControl(this, 10);
 		this.ignoreCameraFrustum = true;
 	}
@@ -72,7 +74,6 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.add(6, new LookAroundGoal(this));
 		this.goalSelector.add(1, new SwimAroundGoal(this, 1.0D, 10));
-		this.goalSelector.add(8, new ChaseBoatGoal(this));
 		this.goalSelector.add(2, new MoveIntoWaterGoal(this));
 		this.targetSelector.add(1, new RevengeGoal(this, new Class[0]).setGroupRevenge());
 		this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
@@ -180,5 +181,14 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public boolean canBeLeashedBy(PlayerEntity player) {
 		return false;
 	}
+	
+	public void grabTarget(Entity entity) {
+        if(entity == this.getTarget() && !entity.hasPassenger(this) && this.isTouchingWater()) {
+            this.startRiding(entity, true);
+            if(entity instanceof ServerPlayerEntity) {
+               ((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
+            }
+        }
+    }
 
 }

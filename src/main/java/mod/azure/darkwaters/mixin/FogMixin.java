@@ -26,7 +26,7 @@ public class FogMixin {
 		float ab;
 		if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(DarkWatersMod.STORMDARKNESS)) {
 			int m = ((LivingEntity) entity).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
-			float n = MathHelper.lerp(Math.min(1.0F, (float) m / 20.0F), viewDistance, 5.0F);
+			float n = MathHelper.lerp(Math.min(1.0F, (float) m / 20.0F), viewDistance, 10.0F);
 			if (fogType == BackgroundRenderer.FogType.FOG_SKY) {
 				y = 0.0F;
 				ab = n * 0.8F;
@@ -50,7 +50,7 @@ public class FogMixin {
 				&& ((LivingEntity) camera.getFocusedEntity()).hasStatusEffect(DarkWatersMod.STORMDARKNESS)) {
 			af = ((LivingEntity) camera.getFocusedEntity()).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
 			if (af < 20) {
-				d *= (double) (1.0F - (float) af / 20.0F);
+				d *= (double) (1.0F - (float) af / 10.0F);
 			} else {
 				d = 0.0D;
 			}

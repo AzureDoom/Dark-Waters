@@ -1,4 +1,7 @@
-v.0.0.3
+v.0.0.4
 
-- Compressed sounds
-- Mobs have sounds now!
+- Aberration and Mohast now spawn during storms.
+- Aberration can now pull you from your boat and attempts to drown you.
+- Mohast won't attack you if you are in a boat but will if out of one.
+- Storm effect no longer given to creative mode players.
+- Increased range of Storm Fog. 

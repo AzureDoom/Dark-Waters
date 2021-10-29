@@ -19,19 +19,19 @@ public class SpawnRestrictionMixin {
 	}
 
 	static {
-		register(DarkWatersMobs.ABERRATION, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.CRAEKEN, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.MANARAW, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.MIRAID, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.MIRAID_HALLUCINATION, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.MOHAST, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
-		register(DarkWatersMobs.SIGHT_HUNTER, SpawnRestriction.Location.ON_GROUND,
-				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.ABERRATION, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.CRAEKEN, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.MANARAW, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.MIRAID, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.MIRAID_HALLUCINATION, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.MOHAST, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
+		register(DarkWatersMobs.SIGHT_HUNTER, SpawnRestriction.Location.IN_WATER,
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 	}
 }

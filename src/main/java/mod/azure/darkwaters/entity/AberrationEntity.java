@@ -40,9 +40,18 @@ public class AberrationEntity extends BaseWaterEntity implements IAnimatable {
 		return PlayState.CONTINUE;
 	}
 
+	public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
+		if (this.dataTracker.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", true));
+			return PlayState.CONTINUE;
+		}
+		return PlayState.STOP;
+	}
+
 	@Override
 	public void registerControllers(AnimationData data) {
 		data.addAnimationController(new AnimationController<AberrationEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<AberrationEntity>(this, "controller1", 0, this::attack));
 	}
 
 	@Override
@@ -53,19 +62,19 @@ public class AberrationEntity extends BaseWaterEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-		this.goalSelector.add(4, new WaterAttackGoal(this, 2));
+		this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, false));
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return DarkWatersSounds.ABBERATION_AMBIENT;
 	}
-	
+
 	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ENTITY_GENERIC_DEATH;
 	}
-	
+
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return DarkWatersSounds.ABBERATION_HURT;
