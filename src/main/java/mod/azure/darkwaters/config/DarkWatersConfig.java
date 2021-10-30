@@ -19,11 +19,9 @@ public class DarkWatersConfig implements ConfigData {
 
 		public int aberration_spawnweight = 10;
 		public int aberration_spawnmin = 1;
-		public int aberration_spawnmax = 1;
 		
 		public int mohast_spawnweight = 10;
-		public int mohast_spawnmin = 3;
-		public int mohast_spawnmax = 10;
+		public int mohast_spawnmin = 1;
 	}
 
 	public static class Stats {

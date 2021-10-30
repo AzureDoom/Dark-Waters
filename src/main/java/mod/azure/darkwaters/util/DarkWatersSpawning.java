@@ -12,9 +12,9 @@ public class DarkWatersSpawning {
 	public static void addSpawnEntries() {
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
 				DarkWatersMobs.ABERRATION, DarkWatersMod.config.spawning.aberration_spawnweight,
-				DarkWatersMod.config.spawning.aberration_spawnmin, DarkWatersMod.config.spawning.aberration_spawnmax);
+				DarkWatersMod.config.spawning.aberration_spawnmin, 1);
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
 				DarkWatersMobs.MOHAST, DarkWatersMod.config.spawning.mohast_spawnweight,
-				DarkWatersMod.config.spawning.mohast_spawnmin, DarkWatersMod.config.spawning.mohast_spawnmax);
+				DarkWatersMod.config.spawning.mohast_spawnmin, 4);
 	}
 }
