@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.network.EntityPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
@@ -156,9 +157,13 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
 	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerWorldAccess world,
 			SpawnReason spawnReason, BlockPos pos, Random random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()) {
-			Optional<RegistryKey<Biome>> optional = world.getBiomeKey(pos);
+		Optional<RegistryKey<Biome>> optional = world.getBiomeKey(pos);
+		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
+				&& DarkWatersMod.config.spawning.require_storm_to_spawn == true) {
 			return (!Objects.equals(optional, Optional.of(BiomeKeys.DEEP_OCEAN))) && ((World) world).isThundering()
+					&& world.getFluidState(pos).isIn(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
+		} else if (DarkWatersMod.config.spawning.require_storm_to_spawn == false) {
+			return (!Objects.equals(optional, Optional.of(BiomeKeys.DEEP_OCEAN)))
 					&& world.getFluidState(pos).isIn(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
 		} else {
 			return false;
@@ -181,14 +186,14 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public boolean canBeLeashedBy(PlayerEntity player) {
 		return false;
 	}
-	
+
 	public void grabTarget(Entity entity) {
-        if(entity == this.getTarget() && !entity.hasPassenger(this) && this.isTouchingWater()) {
-            this.startRiding(entity, true);
-            if(entity instanceof ServerPlayerEntity) {
-               ((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
-            }
-        }
-    }
+		if (entity == this.getTarget() && !entity.hasPassenger(this) && this.isTouchingWater()) {
+			this.startRiding(entity, true);
+			if (entity instanceof ServerPlayerEntity) {
+				((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
+			}
+		}
+	}
 
 }

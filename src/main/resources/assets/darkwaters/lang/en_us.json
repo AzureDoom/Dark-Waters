@@ -16,5 +16,19 @@
 	"entity.darkwaters.bullets": "Bullets",
 	"effect.darkwaters.storm_darkness": "The Storm",
 	"text.autoconfig.darkwaters.title": "Dark Waters Config",
-	"text.autoconfig.darkwaters.option.stats": "Mob Stat Settings"
+	"text.autoconfig.darkwaters.option.spawning": "Mob Spawn Settings",
+	"text.autoconfig.darkwaters.option.spawning.require_storm_to_spawn": "Requires Storms For Mob Spawns",
+	"text.autoconfig.darkwaters.option.spawning.aberration_spawnweight": "Aberration Spawn Weight",
+	"text.autoconfig.darkwaters.option.spawning.aberration_spawnmin": "Aberration Spawn Min",
+	"text.autoconfig.darkwaters.option.spawning.aberration_spawnmax": "Aberration Spawn Max",
+	"text.autoconfig.darkwaters.option.spawning.mohast_spawnweight": "Mohast Spawn Weight",
+	"text.autoconfig.darkwaters.option.spawning.mohast_spawnmin": "Mohast Spawn Min",
+	"text.autoconfig.darkwaters.option.spawning.mohast_spawnmax": "Mohast Spawn Max",
+	"text.autoconfig.darkwaters.option.stats": "Mob Stat Settings",
+	"text.autoconfig.darkwaters.option.stats.aberration_health": "Aberration Health",
+	"text.autoconfig.darkwaters.option.stats.aberration_attack_damage": "Aberration Attack Damage",
+	"text.autoconfig.darkwaters.option.stats.aberration_exp": "Aberration Experience",
+	"text.autoconfig.darkwaters.option.stats.mohast_health": "Mohast Health",
+	"text.autoconfig.darkwaters.option.stats.mohast_attack_damage": "Mohast Attack Damage",
+	"text.autoconfig.darkwaters.option.stats.mohast_exp": "Mohast Experience"
 }
