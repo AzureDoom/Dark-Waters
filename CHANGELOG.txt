@@ -1,3 +1,4 @@
-v.0.0.6
+v.0.0.7
 
-- Added configs for stats, spawning weights, and if Storms are required to spawn mobs.
+- Fixed Entities not removing in peaceful.
+- Hardcoded max group sizes to max at 4, should help with spawning.
