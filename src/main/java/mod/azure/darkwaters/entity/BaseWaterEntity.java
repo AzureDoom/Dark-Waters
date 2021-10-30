@@ -195,5 +195,10 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 			}
 		}
 	}
+	
+	@Override
+	protected boolean isDisallowedInPeaceful() {
+		return true;
+	}
 
 }
