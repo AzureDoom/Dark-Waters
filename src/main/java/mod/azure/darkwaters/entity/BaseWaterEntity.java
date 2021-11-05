@@ -65,7 +65,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, true);
+		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, false);
 		this.lookControl = new AquaticLookControl(this, 10);
 		this.ignoreCameraFrustum = true;
 	}
@@ -186,10 +186,15 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public boolean canBeLeashedBy(PlayerEntity player) {
 		return false;
 	}
+	
+	@Override
+	public double getMountedHeightOffset() {
+		return 0.5D;
+	}
 
 	public void grabTarget(Entity entity) {
 		if (entity == this.getTarget() && !entity.hasPassenger(this) && this.isTouchingWater()) {
-			this.startRiding(entity, true);
+			entity.startRiding(this);
 			if (entity instanceof ServerPlayerEntity) {
 				((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
 			}

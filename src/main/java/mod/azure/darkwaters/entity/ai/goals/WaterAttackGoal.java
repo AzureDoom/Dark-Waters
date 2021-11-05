@@ -46,19 +46,19 @@ public class WaterAttackGoal extends MeleeAttackGoal {
 					&& (this.ridingBoat == true
 							? !(livingentity.getVehicle() != null && livingentity.getVehicle() instanceof BoatEntity)
 							: (livingentity.isAlive()))) {
-				this.targetX = livingentity.getX();
-				this.targetY = livingentity.getY();
-				this.targetZ = livingentity.getZ();
-				this.updateCountdownTicks = 4 + this.mob.getRandom().nextInt(7);
-				if (d0 > 1024.0D) {
-					this.updateCountdownTicks += 10;
-				} else if (d0 > 256.0D) {
-					this.updateCountdownTicks += 5;
+				boolean bl = this.actor.getVisibilityCache().canSee(livingentity);
+				boolean bl2 = this.updateCountdownTicks > 0;
+				if (bl != bl2) {
+					this.updateCountdownTicks = 0;
 				}
 
-				if (!this.mob.getNavigation().startMovingTo(livingentity, 1.3D)) {
-					this.updateCountdownTicks += 15;
+				if (bl) {
+					++this.updateCountdownTicks;
+				} else {
+					--this.updateCountdownTicks;
 				}
+
+				this.actor.getNavigation().startMovingTo(livingentity, 1.3D);
 				this.attack(livingentity, d0);
 				this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 0, 0);
 			}
@@ -68,6 +68,7 @@ public class WaterAttackGoal extends MeleeAttackGoal {
 	@Override
 	public void stop() {
 		super.stop();
+		this.updateCountdownTicks = 0;
 		this.actor.setAttacking(false);
 		this.actor.setAttackingState(0);
 	}
