@@ -3,9 +3,9 @@ package mod.azure.darkwaters.client.models;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.MohastEntity;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
-public class MohastModel extends AnimatedGeoModel<MohastEntity> {
+public class MohastModel extends AnimatedTickingGeoModel<MohastEntity> {
 
 	@Override
 	public Identifier getAnimationFileLocation(MohastEntity animatable) {

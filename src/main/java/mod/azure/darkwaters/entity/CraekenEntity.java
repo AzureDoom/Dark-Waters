@@ -9,6 +9,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -16,7 +17,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CraekenEntity extends BaseWaterEntity implements IAnimatable {
+public class CraekenEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
 
 	private AnimationFactory factory = new AnimationFactory(this);
 
@@ -67,6 +68,11 @@ public class CraekenEntity extends BaseWaterEntity implements IAnimatable {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return r == 1 ? DarkWatersSounds.CRAEKEN_HURT1 : DarkWatersSounds.CRAEKEN_HURT2;
+	}
+
+	@Override
+	public int tickTimer() {
+		return age;
 	}
 
 }

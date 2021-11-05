@@ -3,9 +3,9 @@ package mod.azure.darkwaters.client.models;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.MiraidHallucinationEntity;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
-public class MiraidHallucinationModel extends AnimatedGeoModel<MiraidHallucinationEntity> {
+public class MiraidHallucinationModel extends AnimatedTickingGeoModel<MiraidHallucinationEntity> {
 
 	@Override
 	public Identifier getAnimationFileLocation(MiraidHallucinationEntity animatable) {
@@ -19,8 +19,8 @@ public class MiraidHallucinationModel extends AnimatedGeoModel<MiraidHallucinati
 
 	@Override
 	public Identifier getTextureLocation(MiraidHallucinationEntity object) {
-		return new Identifier(DarkWatersMod.MODID,
-				"textures/entity/" + (object.isAttacking() ? "miraid_hallucination_angry" : "miraid_hallucination") + ".png");
+		return new Identifier(DarkWatersMod.MODID, "textures/entity/"
+				+ (object.isAttacking() ? "miraid_hallucination_angry" : "miraid_hallucination") + ".png");
 	}
 
 }

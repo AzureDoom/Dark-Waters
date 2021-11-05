@@ -3,9 +3,9 @@ package mod.azure.darkwaters.client.models;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.MiraidEntity;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
-public class MiraidModel extends AnimatedGeoModel<MiraidEntity> {
+public class MiraidModel extends AnimatedTickingGeoModel<MiraidEntity> {
 
 	@Override
 	public Identifier getAnimationFileLocation(MiraidEntity animatable) {

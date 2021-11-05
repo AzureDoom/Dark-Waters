@@ -64,7 +64,7 @@ public class MohastEntity extends BaseWaterEntity implements IAnimatable {
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-		this.goalSelector.add(1, new WaterAttackGoal(this, 1, false, true));
+		this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, true));
 	}
 
 	@Override

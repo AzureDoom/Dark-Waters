@@ -9,6 +9,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -16,10 +17,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnimatable {
+public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
 
 	private AnimationFactory factory = new AnimationFactory(this);
-	
+
 	public MiraidHallucinationEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
 		this.experiencePoints = 5;
@@ -41,7 +42,8 @@ public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnima
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<MiraidHallucinationEntity>(this, "controller", 4, this::predicate));
+		data.addAnimationController(
+				new AnimationController<MiraidHallucinationEntity>(this, "controller", 4, this::predicate));
 	}
 
 	@Override
@@ -54,20 +56,25 @@ public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnima
 		super.initGoals();
 
 	}
-	
+
 	@Override
 	protected SoundEvent getAmbientSound() {
 		return DarkWatersSounds.MIRAD_HUM;
 	}
-	
+
 	@Override
 	protected SoundEvent getDeathSound() {
 		return SoundEvents.ENTITY_GENERIC_DEATH;
 	}
-	
+
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return DarkWatersSounds.MIRAD_HURT;
+	}
+
+	@Override
+	public int tickTimer() {
+		return age;
 	}
 
 }

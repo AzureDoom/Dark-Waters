@@ -3,9 +3,9 @@ package mod.azure.darkwaters.client.models;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.SightHunterEntity;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 
-public class SightHunterModel extends AnimatedGeoModel<SightHunterEntity> {
+public class SightHunterModel extends AnimatedTickingGeoModel<SightHunterEntity> {
 
 	@Override
 	public Identifier getAnimationFileLocation(SightHunterEntity animatable) {
