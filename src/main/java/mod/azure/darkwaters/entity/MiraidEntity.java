@@ -1,5 +1,6 @@
 package mod.azure.darkwaters.entity;
 
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.ai.goals.WaterAttackGoal;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
@@ -24,12 +25,13 @@ public class MiraidEntity extends BaseWaterEntity implements IAnimatable, IAnima
 
 	public MiraidEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
-		this.experiencePoints = 5;
+		this.experiencePoints = DarkWatersMod.config.stats.miraid_exp;
 	}
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 70.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0D);
+		return BaseWaterEntity.createMobAttributes()
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersMod.config.stats.miraid_health)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersMod.config.stats.miraid_attack_damage);
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

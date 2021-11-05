@@ -1,5 +1,6 @@
 package mod.azure.darkwaters.entity;
 
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -23,12 +24,13 @@ public class ManarawEntity extends BaseWaterEntity implements IAnimatable, IAnim
 
 	public ManarawEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
-		this.experiencePoints = 20;
+		this.experiencePoints = DarkWatersMod.config.stats.manaraw_exp;
 	}
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 100.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10.0D);
+		return BaseWaterEntity.createMobAttributes()
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersMod.config.stats.manaraw_health)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersMod.config.stats.manaraw_attack_damage);
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
