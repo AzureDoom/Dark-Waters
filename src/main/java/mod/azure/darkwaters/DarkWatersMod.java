@@ -11,11 +11,9 @@ import mod.azure.darkwaters.util.DarkWatersMobs;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import mod.azure.darkwaters.util.DarkWatersSpawning;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 
 public class DarkWatersMod implements ModInitializer {
@@ -34,9 +32,6 @@ public class DarkWatersMod implements ModInitializer {
 		MOBS = new DarkWatersMobs();
 		SOUNDS = new DarkWatersSounds();
 		DarkWatersSpawning.addSpawnEntries();
-		RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME).register((i, id, biome) -> {
-			DarkWatersSpawning.addSpawnEntries();
-		});
 		Registry.register(Registry.ITEM, new Identifier(MODID, "aberration_spawn_egg"),
 				new DarkSpawnEgg(DarkWatersMobs.ABERRATION, 0x150056, 0x826ccc));
 		Registry.register(Registry.ITEM, new Identifier(MODID, "manaraw_spawn_egg"),

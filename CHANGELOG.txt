@@ -1,6 +1,3 @@
-v.0.0.8
+v.0.0.9
 
-- Now using the new ticking system in Geckolib, required version bumped.
-- Use Fabric Spawn placement instead of Mixin.
-- Mobs should not longer get stuck on surface of water.
-- Tweaked attacks to better work, mobs now grab you and you ride them.
+- Fixes crash with RegistryEntryAddedCallback
