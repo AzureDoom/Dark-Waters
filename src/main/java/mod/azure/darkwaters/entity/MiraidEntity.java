@@ -1,5 +1,6 @@
 package mod.azure.darkwaters.entity;
 
+import mod.azure.darkwaters.entity.ai.goals.WaterAttackGoal;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -9,6 +10,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
@@ -16,7 +18,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class MiraidEntity extends BaseWaterEntity implements IAnimatable {
+public class MiraidEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
 
 	private AnimationFactory factory = new AnimationFactory(this);
 
@@ -68,6 +70,11 @@ public class MiraidEntity extends BaseWaterEntity implements IAnimatable {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return DarkWatersSounds.MIRAD_HURT;
+	}
+
+	@Override
+	public int tickTimer() {
+		return age;
 	}
 
 }
