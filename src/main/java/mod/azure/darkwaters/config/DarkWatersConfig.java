@@ -18,10 +18,8 @@ public class DarkWatersConfig implements ConfigData {
 		public boolean require_storm_to_spawn = true;
 
 		public int aberration_spawnweight = 10;
-		public int aberration_spawnmin = 1;
-		
 		public int mohast_spawnweight = 10;
-		public int mohast_spawnmin = 1;
+		public int miraid_spawnweight = 1;
 	}
 
 	public static class Stats {
