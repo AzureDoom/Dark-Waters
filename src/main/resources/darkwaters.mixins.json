@@ -5,8 +5,7 @@
 	"compatibilityLevel": "JAVA_16",
 	"mixins": [
 		"DragMixin",
-		"StormMixin",
-		"SpawnRestrictionMixin"
+		"StormMixin"
 	],
 	"client": [
 		"FogMixin"
