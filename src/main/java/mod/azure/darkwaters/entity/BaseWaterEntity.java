@@ -18,7 +18,7 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.AquaticLookControl;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.goal.FollowTargetGoal;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.MoveIntoWaterGoal;
@@ -77,8 +77,8 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		this.goalSelector.add(1, new SwimAroundGoal(this, 1.0D, 10));
 		this.goalSelector.add(2, new MoveIntoWaterGoal(this));
 		this.targetSelector.add(1, new RevengeGoal(this, new Class[0]).setGroupRevenge());
-		this.targetSelector.add(2, new FollowTargetGoal<>(this, PlayerEntity.class, true));
-		this.targetSelector.add(2, new FollowTargetGoal<>(this, MerchantEntity.class, true));
+		this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.add(2, new ActiveTargetGoal<>(this, MerchantEntity.class, true));
 	}
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
@@ -186,7 +186,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public boolean canBeLeashedBy(PlayerEntity player) {
 		return false;
 	}
-	
+
 	@Override
 	public double getMountedHeightOffset() {
 		return 0.5D;
@@ -200,7 +200,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 			}
 		}
 	}
-	
+
 	@Override
 	protected boolean isDisallowedInPeaceful() {
 		return true;

@@ -12,7 +12,7 @@ import mod.azure.darkwaters.util.DarkWatersSounds;
 import mod.azure.darkwaters.util.DarkWatersSpawning;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectType;
+import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -22,7 +22,7 @@ public class DarkWatersMod implements ModInitializer {
 	public static DarkWatersMobs MOBS;
 	public static DarkWatersConfig config;
 	public static DarkWatersSounds SOUNDS;
-	public static final StatusEffect STORMDARKNESS = new StormDarknessEffect(StatusEffectType.BENEFICIAL,
+	public static final StatusEffect STORMDARKNESS = new StormDarknessEffect(StatusEffectCategory.BENEFICIAL,
 			new Color(0, 0, 0).getRGB());
 
 	@Override

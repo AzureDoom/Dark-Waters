@@ -20,7 +20,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome.Category;
 
-@SuppressWarnings("deprecation")
 @Mixin(PlayerEntity.class)
 public abstract class StormMixin extends LivingEntity {
 
