@@ -16,8 +16,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.control.AquaticLookControl;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
+import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
@@ -66,7 +66,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
 		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, false);
-		this.lookControl = new AquaticLookControl(this, 10);
+		this.lookControl = new YawAdjustingLookControl(this, 10);
 		this.ignoreCameraFrustum = true;
 	}
 
@@ -155,6 +155,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		return new SwimNavigation(this, world);
 	}
 
+	@SuppressWarnings("deprecation")
 	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerWorldAccess world,
 			SpawnReason spawnReason, BlockPos pos, Random random) {
 		Optional<RegistryKey<Biome>> optional = world.getBiomeKey(pos);
