@@ -1,3 +1,4 @@
 v.0.0.9
 
+Direct Port to 1.18
 - Fixes crash with RegistryEntryAddedCallback
