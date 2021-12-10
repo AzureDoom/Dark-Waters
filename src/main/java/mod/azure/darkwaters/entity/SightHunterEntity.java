@@ -1,6 +1,7 @@
 package mod.azure.darkwaters.entity;
 
 import mod.azure.darkwaters.DarkWatersMod;
+import mod.azure.darkwaters.entity.ai.goals.WaterAttackGoal;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -42,9 +43,18 @@ public class SightHunterEntity extends BaseWaterEntity implements IAnimatable, I
 		return PlayState.CONTINUE;
 	}
 
+	public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
+		if (this.dataTracker.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", true));
+			return PlayState.CONTINUE;
+		}
+		return PlayState.STOP;
+	}
+
 	@Override
 	public void registerControllers(AnimationData data) {
 		data.addAnimationController(new AnimationController<SightHunterEntity>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<SightHunterEntity>(this, "controller1", 0, this::attack));
 	}
 
 	@Override
@@ -55,7 +65,7 @@ public class SightHunterEntity extends BaseWaterEntity implements IAnimatable, I
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-
+		this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, true));
 	}
 
 	@Override

@@ -43,9 +43,18 @@ public class MiraidEntity extends BaseWaterEntity implements IAnimatable, IAnima
 		return PlayState.CONTINUE;
 	}
 
+	public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
+		if (this.dataTracker.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", true));
+			return PlayState.CONTINUE;
+		}
+		return PlayState.STOP;
+	}
+
 	@Override
 	public void registerControllers(AnimationData data) {
 		data.addAnimationController(new AnimationController<MiraidEntity>(this, "controller", 4, this::predicate));
+		data.addAnimationController(new AnimationController<MiraidEntity>(this, "controller1", 4, this::attack));
 	}
 
 	@Override

@@ -258,6 +258,24 @@
 					}
 				}
 			}
+		},
+		"attack": {
+			"animation_length": 0.36,
+			"bones": {
+				"lowJaw": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.16": {
+							"vector": [30, 0, 0]
+						},
+						"0.36": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2
