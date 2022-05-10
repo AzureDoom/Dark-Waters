@@ -1,21 +1,15 @@
 package mod.azure.darkwaters.entity;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
 import java.util.SplittableRandom;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
-import mod.azure.darkwaters.DarkWatersMod;
-import mod.azure.darkwaters.network.EntityPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
 import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -35,20 +29,13 @@ import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.tag.FluidTags;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.TimeHelper;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 
 public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
@@ -59,9 +46,12 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public static final TrackedData<Integer> MOVING = DataTracker.registerData(BaseWaterEntity.class,
 			TrackedDataHandlerRegistry.INTEGER);
 	private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
+	public static final TrackedData<Boolean> TEXTURE = DataTracker.registerData(BaseWaterEntity.class,
+			TrackedDataHandlerRegistry.BOOLEAN);
 	private UUID targetUuid;
 	public SplittableRandom myrandom = new SplittableRandom();
 	public int r = myrandom.nextInt(0, 3);
+	public int aliveAfterStorm = 0;
 
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
@@ -88,11 +78,6 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	}
 
 	@Override
-	public Packet<?> createSpawnPacket() {
-		return EntityPacket.createPacket(this);
-	}
-
-	@Override
 	public EntityGroup getGroup() {
 		return EntityGroup.AQUATIC;
 	}
@@ -110,6 +95,14 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		this.dataTracker.set(STATE, time);
 	}
 
+	public Boolean getTextureState() {
+		return this.dataTracker.get(TEXTURE);
+	}
+
+	public void setTextureState(Boolean time) {
+		this.dataTracker.set(TEXTURE, time);
+	}
+
 	public int getMovingState() {
 		return this.dataTracker.get(MOVING);
 	}
@@ -123,6 +116,7 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		super.initDataTracker();
 		this.dataTracker.startTracking(ANGER_TIME, 0);
 		this.dataTracker.startTracking(STATE, 0);
+		this.dataTracker.startTracking(TEXTURE, false);
 		this.dataTracker.startTracking(MOVING, 0);
 	}
 
@@ -155,19 +149,14 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		return new SwimNavigation(this, world);
 	}
 
-	@SuppressWarnings("deprecation")
-	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerWorldAccess world,
-			SpawnReason spawnReason, BlockPos pos, Random random) {
-		Optional<RegistryKey<Biome>> optional = world.getBiomeKey(pos);
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
-				&& DarkWatersMod.config.spawning.require_storm_to_spawn == true) {
-			return (!Objects.equals(optional, Optional.of(BiomeKeys.DEEP_OCEAN))) && ((World) world).isThundering()
-					&& world.getFluidState(pos).isIn(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
-		} else if (DarkWatersMod.config.spawning.require_storm_to_spawn == false) {
-			return (!Objects.equals(optional, Optional.of(BiomeKeys.DEEP_OCEAN)))
-					&& world.getFluidState(pos).isIn(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
-		} else {
-			return false;
+	@Override
+	public void tick() {
+		super.tick();
+		if (!this.world.isThundering()) {
+			aliveAfterStorm++;
+		}
+		if (aliveAfterStorm >= 1200) {
+			this.kill();
 		}
 	}
 
@@ -205,6 +194,19 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	@Override
 	protected boolean isDisallowedInPeaceful() {
 		return true;
+	}
+
+	@Override
+	public float getSoundVolume() {
+		return 0.25F;
+	}
+
+	@Override
+	public void playAmbientSound() {
+		SoundEvent soundEvent = this.getAmbientSound();
+		if (soundEvent != null) {
+			this.playSound(soundEvent, 0.05F, this.getSoundPitch());
+		}
 	}
 
 }

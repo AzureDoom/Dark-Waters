@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 public class MohastModel extends AnimatedTickingGeoModel<MohastEntity> {
 
 	@Override
-	public Identifier getAnimationFileLocation(MohastEntity animatable) {
+	public Identifier getAnimationResource(MohastEntity animatable) {
 		return new Identifier(DarkWatersMod.MODID, "animations/mohast.animation.json");
 	}
 
 	@Override
-	public Identifier getModelLocation(MohastEntity object) {
+	public Identifier getModelResource(MohastEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "geo/mohast.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureLocation(MohastEntity object) {
+	public Identifier getTextureResource(MohastEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "textures/entity/mohast.png");
 	}
 

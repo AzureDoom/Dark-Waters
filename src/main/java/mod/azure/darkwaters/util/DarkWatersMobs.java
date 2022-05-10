@@ -41,7 +41,7 @@ public class DarkWatersMobs {
 	public static final EntityType<CraekenEntity> CRAEKEN = Registry.register(Registry.ENTITY_TYPE,
 			new Identifier(DarkWatersMod.MODID, "craeken"),
 			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, CraekenEntity::new)
-					.dimensions(EntityDimensions.changing(12.6f, 2.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
+					.dimensions(EntityDimensions.changing(4.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(4).build());
 
 	public static final EntityType<MiraidEntity> MIRAID = Registry.register(Registry.ENTITY_TYPE,
 			new Identifier(DarkWatersMod.MODID, "miraid"),

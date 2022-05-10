@@ -17,8 +17,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.tag.BiomeTags;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome.Category;
 
 @Mixin(PlayerEntity.class)
 public abstract class StormMixin extends LivingEntity {
@@ -36,7 +36,7 @@ public abstract class StormMixin extends LivingEntity {
 	public void stormMixin(CallbackInfo ci) {
 		SplittableRandom random = new SplittableRandom();
 		int r = random.nextInt(0, 4);
-		if (world.isThundering() && world.getBiomeAccess().getBiome(getBlockPos()).getCategory().equals(Category.OCEAN)
+		if (world.isThundering() && world.getBiomeAccess().getBiome(getBlockPos()).isIn(BiomeTags.IS_OCEAN)
 				&& !this.abilities.creativeMode) {
 			cooldown++;
 			this.addStatusEffect(new StatusEffectInstance(DarkWatersMod.STORMDARKNESS, 600, 0, true, false, false));

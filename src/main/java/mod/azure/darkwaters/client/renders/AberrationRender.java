@@ -21,7 +21,7 @@ public class AberrationRender extends GeoEntityRenderer<AberrationEntity> {
 	public RenderLayer getRenderType(AberrationEntity animatable, float partialTicks, MatrixStack stack,
 			VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
 			Identifier textureLocation) {
-		return RenderLayer.getEntityTranslucent(getTextureLocation(animatable));
+		return RenderLayer.getEntityTranslucent(getTextureResource(animatable));
 	}
 
 	@Override

@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 public class SightHunterModel extends AnimatedTickingGeoModel<SightHunterEntity> {
 
 	@Override
-	public Identifier getAnimationFileLocation(SightHunterEntity animatable) {
+	public Identifier getAnimationResource(SightHunterEntity animatable) {
 		return new Identifier(DarkWatersMod.MODID, "animations/sight_hunter.animation.json");
 	}
 
 	@Override
-	public Identifier getModelLocation(SightHunterEntity object) {
+	public Identifier getModelResource(SightHunterEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "geo/sight_hunter.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureLocation(SightHunterEntity object) {
+	public Identifier getTextureResource(SightHunterEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "textures/entity/sight_hunter.png");
 	}
 

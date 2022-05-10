@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 public class MiraidModel extends AnimatedTickingGeoModel<MiraidEntity> {
 
 	@Override
-	public Identifier getAnimationFileLocation(MiraidEntity animatable) {
+	public Identifier getAnimationResource(MiraidEntity animatable) {
 		return new Identifier(DarkWatersMod.MODID, "animations/miraid.animation.json");
 	}
 
 	@Override
-	public Identifier getModelLocation(MiraidEntity object) {
+	public Identifier getModelResource(MiraidEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "geo/miraid.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureLocation(MiraidEntity object) {
+	public Identifier getTextureResource(MiraidEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "textures/entity/miraid.png");
 	}
 

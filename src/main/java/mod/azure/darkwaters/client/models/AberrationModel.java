@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
 public class AberrationModel extends AnimatedTickingGeoModel<AberrationEntity> {
 
 	@Override
-	public Identifier getAnimationFileLocation(AberrationEntity animatable) {
+	public Identifier getAnimationResource(AberrationEntity animatable) {
 		return new Identifier(DarkWatersMod.MODID, "animations/aberration.animation.json");
 	}
 
 	@Override
-	public Identifier getModelLocation(AberrationEntity object) {
+	public Identifier getModelResource(AberrationEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "geo/aberration.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureLocation(AberrationEntity object) {
+	public Identifier getTextureResource(AberrationEntity object) {
 		return new Identifier(DarkWatersMod.MODID, "textures/entity/aberration.png");
 	}
 

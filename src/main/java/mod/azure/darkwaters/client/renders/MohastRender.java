@@ -20,6 +20,6 @@ public class MohastRender extends GeoEntityRenderer<MohastEntity> {
 	public RenderLayer getRenderType(MohastEntity animatable, float partialTicks, MatrixStack stack,
 			VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
 			Identifier textureLocation) {
-		return RenderLayer.getEntityTranslucent(getTextureLocation(animatable));
+		return RenderLayer.getEntityTranslucent(getTextureResource(animatable));
 	}
 }
