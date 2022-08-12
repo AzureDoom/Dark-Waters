@@ -1,6 +1,6 @@
 package mod.azure.darkwaters.entity;
 
-import mod.azure.darkwaters.DarkWatersMod;
+import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -12,7 +12,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BiomeTags;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.AbstractRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -31,13 +31,13 @@ public class ManarawEntity extends BaseWaterEntity implements IAnimatable, IAnim
 
 	public ManarawEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
 		super(entityType, world);
-		this.experiencePoints = DarkWatersMod.config.stats.manaraw_exp;
+		this.experiencePoints = DarkWatersConfig.manaraw_exp;
 	}
 
 	public static DefaultAttributeContainer.Builder createMobAttributes() {
 		return BaseWaterEntity.createMobAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersMod.config.stats.manaraw_health)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersMod.config.stats.manaraw_attack_damage);
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersConfig.manaraw_health)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersConfig.manaraw_attack_damage);
 	}
 
 	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
@@ -96,12 +96,12 @@ public class ManarawEntity extends BaseWaterEntity implements IAnimatable, IAnim
 
 	@SuppressWarnings("deprecation")
 	public static boolean canSpawnInDarkWater(EntityType<ManarawEntity> type, WorldAccess world, SpawnReason reason,
-			BlockPos pos, AbstractRandom random) {
+			BlockPos pos, Random random) {
 		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
-				&& DarkWatersMod.config.spawning.require_storm_to_spawn == true) {
+				&& DarkWatersConfig.require_storm_to_spawn == true) {
 			return ((World) world).isThundering() && world.getFluidState(pos).isIn(FluidTags.WATER)
 					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).isIn(BiomeTags.IS_OCEAN);
-		} else if (DarkWatersMod.config.spawning.require_storm_to_spawn == false) {
+		} else if (DarkWatersConfig.require_storm_to_spawn == false) {
 			return world.getBiome(pos).isIn(BiomeTags.IS_OCEAN) && world.getFluidState(pos).isIn(FluidTags.WATER)
 					&& world.getDifficulty() != Difficulty.PEACEFUL;
 		} else {

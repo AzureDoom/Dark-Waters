@@ -2,7 +2,7 @@ package mod.azure.darkwaters.entity;
 
 import java.util.List;
 
-import mod.azure.darkwaters.DarkWatersMod;
+import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -17,7 +17,7 @@ import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.AbstractRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -112,12 +112,12 @@ public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnima
 
 	@SuppressWarnings("deprecation")
 	public static boolean canSpawnInDarkWater(EntityType<MiraidHallucinationEntity> type, WorldAccess world,
-			SpawnReason reason, BlockPos pos, AbstractRandom random) {
+			SpawnReason reason, BlockPos pos, Random random) {
 		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
-				&& DarkWatersMod.config.spawning.require_storm_to_spawn == true) {
+				&& DarkWatersConfig.require_storm_to_spawn == true) {
 			return ((World) world).isThundering() && world.getFluidState(pos).isIn(FluidTags.WATER)
 					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).isIn(BiomeTags.IS_OCEAN);
-		} else if (DarkWatersMod.config.spawning.require_storm_to_spawn == false) {
+		} else if (DarkWatersConfig.require_storm_to_spawn == false) {
 			return world.getBiome(pos).isIn(BiomeTags.IS_OCEAN) && world.getFluidState(pos).isIn(FluidTags.WATER)
 					&& world.getDifficulty() != Difficulty.PEACEFUL;
 		} else {

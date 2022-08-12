@@ -1,6 +1,6 @@
 package mod.azure.darkwaters.util;
 
-import mod.azure.darkwaters.DarkWatersMod;
+import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.entity.AberrationEntity;
 import mod.azure.darkwaters.entity.CraekenEntity;
 import mod.azure.darkwaters.entity.ManarawEntity;
@@ -20,11 +20,11 @@ public class DarkWatersSpawning {
 
 	public static void addSpawnEntries() {
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
-				DarkWatersMobs.ABERRATION, DarkWatersMod.config.spawning.aberration_spawnweight, 1, 1);
+				DarkWatersMobs.ABERRATION, DarkWatersConfig.aberration_spawnweight, 1, 1);
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
-				DarkWatersMobs.MOHAST, DarkWatersMod.config.spawning.mohast_spawnweight, 1, 4);
+				DarkWatersMobs.MOHAST, DarkWatersConfig.mohast_spawnweight, 1, 4);
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
-				DarkWatersMobs.MIRAID, DarkWatersMod.config.spawning.miraid_spawnweight, 1, 1);
+				DarkWatersMobs.MIRAID, DarkWatersConfig.miraid_spawnweight, 1, 1);
 		SpawnRestrictionAccessor.callRegister(DarkWatersMobs.ABERRATION, SpawnRestriction.Location.IN_WATER,
 				Heightmap.Type.OCEAN_FLOOR, AberrationEntity::canSpawnInDarkWater);
 		SpawnRestrictionAccessor.callRegister(DarkWatersMobs.CRAEKEN, SpawnRestriction.Location.IN_WATER,

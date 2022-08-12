@@ -2,8 +2,7 @@ package mod.azure.darkwaters;
 
 import java.awt.Color;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import mod.azure.darkwaters.config.CustomMidnightConfig;
 import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.effect.StormDarknessEffect;
 import mod.azure.darkwaters.items.DarkSpawnEgg;
@@ -20,15 +19,13 @@ public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
 	public static DarkWatersMobs MOBS;
-	public static DarkWatersConfig config;
 	public static DarkWatersSounds SOUNDS;
 	public static final StatusEffect STORMDARKNESS = new StormDarknessEffect(StatusEffectCategory.BENEFICIAL,
 			new Color(0, 0, 0).getRGB());
 
 	@Override
 	public void onInitialize() {
-		AutoConfig.register(DarkWatersConfig.class, GsonConfigSerializer::new);
-		config = AutoConfig.getConfigHolder(DarkWatersConfig.class).getConfig();
+		CustomMidnightConfig.init(MODID, DarkWatersConfig.class);
 		MOBS = new DarkWatersMobs();
 		SOUNDS = new DarkWatersSounds();
 		DarkWatersSpawning.addSpawnEntries();
