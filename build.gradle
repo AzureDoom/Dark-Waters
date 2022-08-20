@@ -136,7 +136,7 @@ if (file('key.properties').exists()) {
 		projectId = 'pe7gyI14' 
 		versionNumber = project.mod_version 
 		versionName = 'Fabric 1.19.2'
-		uploadFile = jar 
+		uploadFile = remapJar 
 		changelog = rootProject.file("changelog.txt").text
 		gameVersions = ['1.19.2']
 		loaders = ['fabric']
