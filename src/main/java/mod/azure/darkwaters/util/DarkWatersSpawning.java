@@ -1,13 +1,7 @@
 package mod.azure.darkwaters.util;
 
 import mod.azure.darkwaters.config.DarkWatersConfig;
-import mod.azure.darkwaters.entity.AberrationEntity;
-import mod.azure.darkwaters.entity.CraekenEntity;
-import mod.azure.darkwaters.entity.ManarawEntity;
-import mod.azure.darkwaters.entity.MiraidEntity;
-import mod.azure.darkwaters.entity.MiraidHallucinationEntity;
-import mod.azure.darkwaters.entity.MohastEntity;
-import mod.azure.darkwaters.entity.SightHunterEntity;
+import mod.azure.darkwaters.entity.BaseWaterEntity;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.entity.EntityType;
@@ -25,18 +19,18 @@ public class DarkWatersSpawning {
 		BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.DOLPHIN), SpawnGroup.WATER_CREATURE,
 				DarkWatersMobs.MIRAID, DarkWatersConfig.miraid_spawnweight, 1, 1);
 		SpawnRestriction.register(DarkWatersMobs.ABERRATION, SpawnRestriction.Location.IN_WATER,
-				Heightmap.Type.OCEAN_FLOOR, AberrationEntity::canSpawnInDarkWater);
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.CRAEKEN, SpawnRestriction.Location.IN_WATER,
-				Heightmap.Type.OCEAN_FLOOR, CraekenEntity::canSpawnInDarkWater);
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.MANARAW, SpawnRestriction.Location.IN_WATER,
-				Heightmap.Type.OCEAN_FLOOR, ManarawEntity::canSpawnInDarkWater);
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.MIRAID, SpawnRestriction.Location.IN_WATER, Heightmap.Type.OCEAN_FLOOR,
-				MiraidEntity::canSpawnInDarkWater);
+				BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.MIRAID_HALLUCINATION, SpawnRestriction.Location.IN_WATER,
-				Heightmap.Type.OCEAN_FLOOR, MiraidHallucinationEntity::canSpawnInDarkWater);
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.MOHAST, SpawnRestriction.Location.IN_WATER, Heightmap.Type.OCEAN_FLOOR,
-				MohastEntity::canSpawnInDarkWater);
+				BaseWaterEntity::canSpawnInDarkWater);
 		SpawnRestriction.register(DarkWatersMobs.SIGHT_HUNTER, SpawnRestriction.Location.IN_WATER,
-				Heightmap.Type.OCEAN_FLOOR, SightHunterEntity::canSpawnInDarkWater);
+				Heightmap.Type.OCEAN_FLOOR, BaseWaterEntity::canSpawnInDarkWater);
 	}
 }

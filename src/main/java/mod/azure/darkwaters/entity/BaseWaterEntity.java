@@ -5,11 +5,13 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import mod.azure.darkwaters.config.DarkWatersConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.AquaticMoveControl;
 import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -32,10 +34,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.BiomeTags;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.TimeHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 
@@ -58,6 +66,20 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, false);
 		this.lookControl = new YawAdjustingLookControl(this, 10);
 		this.ignoreCameraFrustum = true;
+	}
+
+	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, WorldAccess world,
+			SpawnReason reason, BlockPos pos, Random random) {
+		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
+				&& DarkWatersConfig.require_storm_to_spawn == true) {
+			return ((World) world).isThundering() && world.getFluidState(pos).isIn(FluidTags.WATER)
+					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).isIn(BiomeTags.IS_OCEAN);
+		} else if (DarkWatersConfig.require_storm_to_spawn == false) {
+			return world.getBiome(pos).isIn(BiomeTags.IS_OCEAN) && world.getFluidState(pos).isIn(FluidTags.WATER)
+					&& world.getDifficulty() != Difficulty.PEACEFUL;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
