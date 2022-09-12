@@ -3,19 +3,12 @@ package mod.azure.darkwaters.entity;
 import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.BiomeTags;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
 import software.bernie.geckolib3.core.PlayState;
@@ -92,21 +85,6 @@ public class ManarawEntity extends BaseWaterEntity implements IAnimatable, IAnim
 	@Override
 	public int tickTimer() {
 		return age;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static boolean canSpawnInDarkWater(EntityType<ManarawEntity> type, WorldAccess world, SpawnReason reason,
-			BlockPos pos, Random random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
-				&& DarkWatersConfig.require_storm_to_spawn == true) {
-			return ((World) world).isThundering() && world.getFluidState(pos).isIn(FluidTags.WATER)
-					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).isIn(BiomeTags.IS_OCEAN);
-		} else if (DarkWatersConfig.require_storm_to_spawn == false) {
-			return world.getBiome(pos).isIn(BiomeTags.IS_OCEAN) && world.getFluidState(pos).isIn(FluidTags.WATER)
-					&& world.getDifficulty() != Difficulty.PEACEFUL;
-		} else {
-			return false;
-		}
 	}
 
 }
