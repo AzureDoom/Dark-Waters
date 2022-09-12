@@ -1,7 +1,6 @@
 package mod.azure.darkwaters.entity;
 
 import java.util.List;
-
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,84 +21,90 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class MiraidHallucinationEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
+public class MiraidHallucinationEntity
+    extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
 
-	private AnimationFactory factory = new AnimationFactory(this);
+  private AnimationFactory factory = new AnimationFactory(this);
 
-	public MiraidHallucinationEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
-		super(entityType, world);
-		this.experiencePoints = 5;
-	}
+  public MiraidHallucinationEntity(
+      EntityType<? extends BaseWaterEntity> entityType, World world) {
+    super(entityType, world);
+    this.experiencePoints = 5;
+  }
 
-	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 70.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0D);
-	}
+  public static DefaultAttributeContainer.Builder createMobAttributes() {
+    return BaseWaterEntity.createMobAttributes()
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, 70.0D)
+        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 7.0D);
+  }
 
-	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("moving", true));
-			return PlayState.CONTINUE;
-		}
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
-		return PlayState.CONTINUE;
-	}
+  public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    if (event.isMoving()) {
+      event.getController().setAnimation(
+          new AnimationBuilder().addAnimation("moving", true));
+      return PlayState.CONTINUE;
+    }
+    event.getController().setAnimation(
+        new AnimationBuilder().addAnimation("idle", true));
+    return PlayState.CONTINUE;
+  }
 
-	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(
-				new AnimationController<MiraidHallucinationEntity>(this, "controller", 4, this::predicate));
-	}
+  @Override
+  public void registerControllers(AnimationData data) {
+    data.addAnimationController(
+        new AnimationController<MiraidHallucinationEntity>(this, "controller",
+                                                           4, this::predicate));
+  }
 
-	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
-	}
+  @Override
+  public AnimationFactory getFactory() {
+    return this.factory;
+  }
 
-	@Override
-	protected void initGoals() {
-		super.initGoals();
+  @Override
+  protected void initGoals() {
+    super.initGoals();
+  }
 
-	}
+  @Override
+  protected SoundEvent getAmbientSound() {
+    return DarkWatersSounds.MIRAD_HUM;
+  }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return DarkWatersSounds.MIRAD_HUM;
-	}
+  @Override
+  protected SoundEvent getDeathSound() {
+    return SoundEvents.ENTITY_GENERIC_DEATH;
+  }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_GENERIC_DEATH;
-	}
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    return DarkWatersSounds.MIRAD_HURT;
+  }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return DarkWatersSounds.MIRAD_HURT;
-	}
+  @Override
+  public int tickTimer() {
+    return age;
+  }
 
-	@Override
-	public int tickTimer() {
-		return age;
-	}
-
-	@Override
-	public void tick() {
-		super.tick();
-		float q = 50.0F;
-		int k = MathHelper.floor(this.getX() - (double) q - 1.0D);
-		int l = MathHelper.floor(this.getX() + (double) q + 1.0D);
-		int t = MathHelper.floor(this.getY() - (double) q - 1.0D);
-		int u = MathHelper.floor(this.getY() + (double) q + 1.0D);
-		int v = MathHelper.floor(this.getZ() - (double) q - 1.0D);
-		int w = MathHelper.floor(this.getZ() + (double) q + 1.0D);
-		List<Entity> list = this.world.getOtherEntities(this,
-				new Box((double) k, (double) t, (double) v, (double) l, (double) u, (double) w));
-		for (int x = 0; x < list.size(); ++x) {
-			Entity entity = (Entity) list.get(x);
-			if (entity instanceof MiraidEntity) {
-				this.setTextureState(((MiraidEntity) entity).isAttacking() ? true : false);
-			}
-		}
-	}
-
+  @Override
+  public void tick() {
+    super.tick();
+    float q = 50.0F;
+    int k = MathHelper.floor(this.getX() - (double)q - 1.0D);
+    int l = MathHelper.floor(this.getX() + (double)q + 1.0D);
+    int t = MathHelper.floor(this.getY() - (double)q - 1.0D);
+    int u = MathHelper.floor(this.getY() + (double)q + 1.0D);
+    int v = MathHelper.floor(this.getZ() - (double)q - 1.0D);
+    int w = MathHelper.floor(this.getZ() + (double)q + 1.0D);
+    List<Entity> list = this.world.getOtherEntities(
+        this, new Box((double)k, (double)t, (double)v, (double)l, (double)u,
+                      (double)w));
+    for (int x = 0; x < list.size(); ++x) {
+      Entity entity = (Entity)list.get(x);
+      if (entity instanceof MiraidEntity) {
+        this.setTextureState(((MiraidEntity)entity).isAttacking() ? true
+                                                                  : false);
+      }
+    }
+  }
 }

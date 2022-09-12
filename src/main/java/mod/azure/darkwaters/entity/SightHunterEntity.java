@@ -19,73 +19,83 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class SightHunterEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
+public class SightHunterEntity
+    extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
 
-	private AnimationFactory factory = new AnimationFactory(this);
+  private AnimationFactory factory = new AnimationFactory(this);
 
-	public SightHunterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
-		super(entityType, world);
-		this.experiencePoints = DarkWatersConfig.sighthunter_exp;
-	}
+  public SightHunterEntity(EntityType<? extends BaseWaterEntity> entityType,
+                           World world) {
+    super(entityType, world);
+    this.experiencePoints = DarkWatersConfig.sighthunter_exp;
+  }
 
-	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersConfig.sighthunter_health)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersConfig.sighthunter_attack_damage);
-	}
+  public static DefaultAttributeContainer.Builder createMobAttributes() {
+    return BaseWaterEntity.createMobAttributes()
+        .add(EntityAttributes.GENERIC_MAX_HEALTH,
+             DarkWatersConfig.sighthunter_health)
+        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE,
+             DarkWatersConfig.sighthunter_attack_damage);
+  }
 
-	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("moving", true));
-			return PlayState.CONTINUE;
-		}
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
-		return PlayState.CONTINUE;
-	}
+  public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    if (event.isMoving()) {
+      event.getController().setAnimation(
+          new AnimationBuilder().addAnimation("moving", true));
+      return PlayState.CONTINUE;
+    }
+    event.getController().setAnimation(
+        new AnimationBuilder().addAnimation("idle", true));
+    return PlayState.CONTINUE;
+  }
 
-	public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
-		if (this.dataTracker.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", true));
-			return PlayState.CONTINUE;
-		}
-		return PlayState.STOP;
-	}
+  public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
+    if (this.dataTracker.get(STATE) == 1 &&
+        !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
+      event.getController().setAnimation(
+          new AnimationBuilder().addAnimation("attack", true));
+      return PlayState.CONTINUE;
+    }
+    return PlayState.STOP;
+  }
 
-	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<SightHunterEntity>(this, "controller", 0, this::predicate));
-		data.addAnimationController(new AnimationController<SightHunterEntity>(this, "controller1", 0, this::attack));
-	}
+  @Override
+  public void registerControllers(AnimationData data) {
+    data.addAnimationController(new AnimationController<SightHunterEntity>(
+        this, "controller", 0, this::predicate));
+    data.addAnimationController(new AnimationController<SightHunterEntity>(
+        this, "controller1", 0, this::attack));
+  }
 
-	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
-	}
+  @Override
+  public AnimationFactory getFactory() {
+    return this.factory;
+  }
 
-	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, true));
-	}
+  @Override
+  protected void initGoals() {
+    super.initGoals();
+    this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, true));
+  }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return r == 1 ? DarkWatersSounds.SLIGHTHUNTER_AMBIENT1 : DarkWatersSounds.SLIGHTHUNTER_AMBIENT2;
-	}
+  @Override
+  protected SoundEvent getAmbientSound() {
+    return r == 1 ? DarkWatersSounds.SLIGHTHUNTER_AMBIENT1
+                  : DarkWatersSounds.SLIGHTHUNTER_AMBIENT2;
+  }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_GENERIC_DEATH;
-	}
+  @Override
+  protected SoundEvent getDeathSound() {
+    return SoundEvents.ENTITY_GENERIC_DEATH;
+  }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return DarkWatersSounds.SLIGHTHUNTER_ATTACK_HURT;
-	}
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    return DarkWatersSounds.SLIGHTHUNTER_ATTACK_HURT;
+  }
 
-	@Override
-	public int tickTimer() {
-		return age;
-	}
-
+  @Override
+  public int tickTimer() {
+    return age;
+  }
 }
