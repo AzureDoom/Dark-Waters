@@ -9,6 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import mod.azure.darkwaters.DarkWatersMod;
 import net.minecraft.client.render.BackgroundRenderer;
+import net.minecraft.client.render.BackgroundRenderer.FogType;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -20,8 +21,8 @@ import net.minecraft.util.math.MathHelper;
 public class FogMixin {
 
 	@Inject(method = "applyFog", at = @At("TAIL"))
-	private static void stormMixin(Camera camera, BackgroundRenderer.FogType fogType, float viewDistance,
-			boolean thickFog, CallbackInfo ci) {
+	private static void stormMixin(Camera camera, FogType fogType, float viewDistance,
+			boolean thickFog, float tickDelta, CallbackInfo ci) {
 		Entity entity = camera.getFocusedEntity();
 		float y;
 		float ab;
@@ -44,7 +45,7 @@ public class FogMixin {
 
 	@SuppressWarnings("unused")
 	@Inject(method = "render", at = @At("HEAD"))
-	private static void stormRenderMixin(Camera camera, float tickDelta, ClientWorld world, int i, float f,
+	private static void stormRenderMixin(Camera camera, float tickDelta, ClientWorld world, int viewDistance, float skyDarkness,
 			CallbackInfo ci) {
 		int af;
 		double d = (camera.getPos().y - (double) world.getBottomY())
