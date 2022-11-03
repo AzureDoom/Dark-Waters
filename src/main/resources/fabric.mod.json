@@ -36,7 +36,7 @@
 		"fabric": "*",
 		"minecraft": ">=1.19.1",
 		"java": ">=17",
-		"geckolib3": ">=3.0.0"
+		"geckolib3": ">=3.0.35"
 	},
 	"accessWidener": "darkwaters.accesswidener"
 }
