@@ -1,25 +1,31 @@
 package mod.azure.darkwaters.client.models;
 
+import mod.azure.azurelib.model.GeoModel;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.SightHunterEntity;
-import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
-public class SightHunterModel extends AnimatedTickingGeoModel<SightHunterEntity> {
+public class SightHunterModel extends GeoModel<SightHunterEntity> {
 
 	@Override
-	public Identifier getAnimationResource(SightHunterEntity animatable) {
-		return new Identifier(DarkWatersMod.MODID, "animations/sight_hunter.animation.json");
+	public ResourceLocation getAnimationResource(SightHunterEntity animatable) {
+		return new ResourceLocation(DarkWatersMod.MODID, "animations/sight_hunter.animation.json");
 	}
 
 	@Override
-	public Identifier getModelResource(SightHunterEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "geo/sight_hunter.geo.json");
+	public ResourceLocation getModelResource(SightHunterEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "geo/sight_hunter.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureResource(SightHunterEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "textures/entity/sight_hunter.png");
+	public ResourceLocation getTextureResource(SightHunterEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/sight_hunter.png");
+	}
+
+	@Override
+	public RenderType getRenderType(SightHunterEntity animatable, ResourceLocation texture) {
+		return RenderType.entityTranslucent(getTextureResource(animatable));
 	}
 
 }

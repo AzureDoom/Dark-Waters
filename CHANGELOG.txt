@@ -1,3 +1,8 @@
-v.0.0.9
+v.0.0.10
 
-- 1.18.1 Full Release
+- Updated to 1.19.3
+- Moved to AzureLib
+- Moved AI to SmartBrainLib
+
+**Mob AI is no where near finished and is just basic for now**
+**All Animations yet not implemented to the mobs, this will be done with AI updates**

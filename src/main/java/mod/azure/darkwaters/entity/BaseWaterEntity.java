@@ -6,215 +6,194 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import mod.azure.darkwaters.config.DarkWatersConfig;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.control.YawAdjustingLookControl;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MoveIntoWaterGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.tag.BiomeTags;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.util.TimeHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.math.random.Random;
+import mod.azure.darkwaters.entity.pathing.AzureNavigation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 
-public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
+public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 
-	private static final TrackedData<Integer> ANGER_TIME = DataTracker.registerData(BaseWaterEntity.class,
-			TrackedDataHandlerRegistry.INTEGER);
-	public static final TrackedData<Integer> STATE = DataTracker.registerData(BaseWaterEntity.class,
-			TrackedDataHandlerRegistry.INTEGER);
-	public static final TrackedData<Integer> MOVING = DataTracker.registerData(BaseWaterEntity.class,
-			TrackedDataHandlerRegistry.INTEGER);
-	private static final UniformIntProvider ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
-	public static final TrackedData<Boolean> TEXTURE = DataTracker.registerData(BaseWaterEntity.class,
-			TrackedDataHandlerRegistry.BOOLEAN);
+	private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(BaseWaterEntity.class,
+			EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(BaseWaterEntity.class,
+			EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> MOVING = SynchedEntityData.defineId(BaseWaterEntity.class,
+			EntityDataSerializers.INT);
+	private static final UniformInt ANGER_TIME_RANGE = TimeUtil.rangeOfSeconds(20, 39);
+	public static final EntityDataAccessor<Boolean> TEXTURE = SynchedEntityData.defineId(BaseWaterEntity.class,
+			EntityDataSerializers.BOOLEAN);
 	private UUID targetUuid;
 	public SplittableRandom myrandom = new SplittableRandom();
 	public int r = myrandom.nextInt(0, 3);
 	public int aliveAfterStorm = 0;
 
-	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
+	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.5F, false);
-		this.lookControl = new YawAdjustingLookControl(this, 10);
-		this.ignoreCameraFrustum = true;
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.5F, false);
+		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 	}
 
-	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, WorldAccess world,
-			SpawnReason reason, BlockPos pos, Random random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((World) world).isThundering()
+	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerLevelAccessor world,
+			MobSpawnType reason, BlockPos pos, RandomSource random) {
+		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((Level) world).isThundering()
 				&& DarkWatersConfig.require_storm_to_spawn == true) {
-			return ((World) world).isThundering() && world.getFluidState(pos).isIn(FluidTags.WATER)
-					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).isIn(BiomeTags.IS_OCEAN);
+			return ((Level) world).isThundering() && world.getFluidState(pos).is(FluidTags.WATER)
+					&& world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).is(BiomeTags.IS_OCEAN);
 		} else if (DarkWatersConfig.require_storm_to_spawn == false) {
-			return world.getBiome(pos).isIn(BiomeTags.IS_OCEAN) && world.getFluidState(pos).isIn(FluidTags.WATER)
+			return world.getBiome(pos).is(BiomeTags.IS_OCEAN) && world.getFluidState(pos).is(FluidTags.WATER)
 					&& world.getDifficulty() != Difficulty.PEACEFUL;
 		} else {
 			return false;
 		}
 	}
 
-	@Override
-	protected void initGoals() {
-		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.add(6, new LookAroundGoal(this));
-		this.goalSelector.add(1, new SwimAroundGoal(this, 1.0D, 10));
-		this.goalSelector.add(2, new MoveIntoWaterGoal(this));
-		this.targetSelector.add(1, new RevengeGoal(this, new Class[0]).setGroupRevenge());
-		this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-		this.targetSelector.add(2, new ActiveTargetGoal<>(this, MerchantEntity.class, true));
-	}
-
-	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return LivingEntity.createLivingAttributes().add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25.0D)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 1.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.0D);
+	public static AttributeSupplier.Builder createMobAttributes() {
+		return LivingEntity.createLivingAttributes().add(Attributes.FOLLOW_RANGE, 25.0D)
+				.add(Attributes.MOVEMENT_SPEED, 1.0D).add(Attributes.ATTACK_KNOCKBACK, 1.0D);
 	}
 
 	@Override
-	public EntityGroup getGroup() {
-		return EntityGroup.AQUATIC;
+	public MobType getMobType() {
+		return MobType.WATER;
 	}
 
 	@Override
-	public boolean canBreatheInWater() {
+	public boolean canBreatheUnderwater() {
 		return true;
 	}
 
 	public int getAttckingState() {
-		return this.dataTracker.get(STATE);
+		return this.entityData.get(STATE);
 	}
 
 	public void setAttackingState(int time) {
-		this.dataTracker.set(STATE, time);
+		this.entityData.set(STATE, time);
 	}
 
 	public Boolean getTextureState() {
-		return this.dataTracker.get(TEXTURE);
+		return this.entityData.get(TEXTURE);
 	}
 
 	public void setTextureState(Boolean time) {
-		this.dataTracker.set(TEXTURE, time);
+		this.entityData.set(TEXTURE, time);
 	}
 
 	public int getMovingState() {
-		return this.dataTracker.get(MOVING);
+		return this.entityData.get(MOVING);
 	}
 
 	public void setMovingState(int time) {
-		this.dataTracker.set(MOVING, time);
+		this.entityData.set(MOVING, time);
 	}
 
 	@Override
-	protected void initDataTracker() {
-		super.initDataTracker();
-		this.dataTracker.startTracking(ANGER_TIME, 0);
-		this.dataTracker.startTracking(STATE, 0);
-		this.dataTracker.startTracking(TEXTURE, false);
-		this.dataTracker.startTracking(MOVING, 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(ANGER_TIME, 0);
+		this.entityData.define(STATE, 0);
+		this.entityData.define(TEXTURE, false);
+		this.entityData.define(MOVING, 0);
 	}
 
 	@Override
-	public int getAngerTime() {
-		return this.dataTracker.get(ANGER_TIME);
+	public int getRemainingPersistentAngerTime() {
+		return this.entityData.get(ANGER_TIME);
 	}
 
 	@Override
-	public void setAngerTime(int ticks) {
-		this.dataTracker.set(ANGER_TIME, ticks);
+	public void setRemainingPersistentAngerTime(int ticks) {
+		this.entityData.set(ANGER_TIME, ticks);
 	}
 
 	@Override
-	public UUID getAngryAt() {
+	public UUID getPersistentAngerTarget() {
 		return this.targetUuid;
 	}
 
 	@Override
-	public void setAngryAt(@Nullable UUID uuid) {
+	public void setPersistentAngerTarget(@Nullable UUID uuid) {
 		this.targetUuid = uuid;
 	}
 
 	@Override
-	public void chooseRandomAngerTime() {
-		this.setAngerTime(ANGER_TIME_RANGE.get(this.random));
+	public void startPersistentAngerTimer() {
+		this.setRemainingPersistentAngerTime(ANGER_TIME_RANGE.sample(this.random));
 	}
 
-	public EntityNavigation createNavigation(World world) {
-		return new SwimNavigation(this, world);
+	public PathNavigation createNavigation(Level world) {
+		return new AzureNavigation(this, world);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.world.isThundering()) {
+		if (!this.level.isThundering())
 			aliveAfterStorm++;
-		}
-		if (aliveAfterStorm >= 1200) {
+		if (aliveAfterStorm >= 1200)
 			this.kill();
-		}
 	}
 
-	public void travel(Vec3d movementInput) {
-		if (this.canMoveVoluntarily() && this.isTouchingWater()) {
-			this.updateVelocity(this.getMovementSpeed(), movementInput);
-			this.move(MovementType.SELF, this.getVelocity());
-			this.setVelocity(this.getVelocity().multiply(0.9D));
+	public void travel(Vec3 movementInput) {
+		if (this.isEffectiveAi() && this.isInWater()) {
+			this.moveRelative(this.getSpeed(), movementInput);
+			this.move(MoverType.SELF, this.getDeltaMovement());
+			this.setDeltaMovement(this.getDeltaMovement().scale(0.9D));
 			if (this.getTarget() == null) {
-				this.setVelocity(this.getVelocity().add(0.0D, -0.005D, 0.0D));
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0D, -0.005D, 0.0D));
 			}
-		} else {
+		} else
 			super.travel(movementInput);
-		}
 	}
 
-	public boolean canBeLeashedBy(PlayerEntity player) {
+	@Override
+	public boolean canBeLeashed(Player player) {
 		return false;
 	}
 
 	@Override
-	public double getMountedHeightOffset() {
+	public double getPassengersRidingOffset() {
 		return 0.5D;
 	}
 
 	public void grabTarget(Entity entity) {
-		if (entity == this.getTarget() && !entity.hasPassenger(this) && this.isTouchingWater()) {
+		if (entity == this.getTarget() && !entity.hasPassenger(this) && this.isInWater()) {
 			entity.startRiding(this);
-			if (entity instanceof ServerPlayerEntity) {
-				((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
+			if (entity instanceof ServerPlayer) {
+				((ServerPlayer) entity).connection.send(new ClientboundSetPassengersPacket(entity));
 			}
 		}
 	}
 
 	@Override
-	protected boolean isDisallowedInPeaceful() {
+	protected boolean shouldDespawnInPeaceful() {
 		return true;
 	}
 
@@ -227,7 +206,21 @@ public class BaseWaterEntity extends WaterCreatureEntity implements Angerable {
 	public void playAmbientSound() {
 		SoundEvent soundEvent = this.getAmbientSound();
 		if (soundEvent != null) {
-			this.playSound(soundEvent, 0.05F, this.getSoundPitch());
+			this.playSound(soundEvent, 0.05F, this.getVoicePitch());
+		}
+	}
+
+	@Override
+	protected void registerGoals() {
+		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+	}
+
+	@Override
+	protected void tickDeath() {
+		++this.deathTime;
+		if (this.deathTime == 35) {
+			this.remove(Entity.RemovalReason.KILLED);
+			this.dropExperience();
 		}
 	}
 

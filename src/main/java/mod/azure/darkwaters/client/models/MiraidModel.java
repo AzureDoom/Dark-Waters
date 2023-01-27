@@ -1,25 +1,31 @@
 package mod.azure.darkwaters.client.models;
 
+import mod.azure.azurelib.model.GeoModel;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.MiraidEntity;
-import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
-public class MiraidModel extends AnimatedTickingGeoModel<MiraidEntity> {
+public class MiraidModel extends GeoModel<MiraidEntity> {
 
 	@Override
-	public Identifier getAnimationResource(MiraidEntity animatable) {
-		return new Identifier(DarkWatersMod.MODID, "animations/miraid.animation.json");
+	public ResourceLocation getAnimationResource(MiraidEntity animatable) {
+		return new ResourceLocation(DarkWatersMod.MODID, "animations/miraid.animation.json");
 	}
 
 	@Override
-	public Identifier getModelResource(MiraidEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "geo/miraid.geo.json");
+	public ResourceLocation getModelResource(MiraidEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "geo/miraid.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureResource(MiraidEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "textures/entity/miraid.png");
+	public ResourceLocation getTextureResource(MiraidEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/miraid.png");
+	}
+
+	@Override
+	public RenderType getRenderType(MiraidEntity animatable, ResourceLocation texture) {
+		return RenderType.entityTranslucent(getTextureResource(animatable));
 	}
 
 }

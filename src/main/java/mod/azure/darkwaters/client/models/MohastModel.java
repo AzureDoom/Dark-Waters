@@ -1,25 +1,31 @@
 package mod.azure.darkwaters.client.models;
 
+import mod.azure.azurelib.model.GeoModel;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.MohastEntity;
-import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
-public class MohastModel extends AnimatedTickingGeoModel<MohastEntity> {
+public class MohastModel extends GeoModel<MohastEntity> {
 
 	@Override
-	public Identifier getAnimationResource(MohastEntity animatable) {
-		return new Identifier(DarkWatersMod.MODID, "animations/mohast.animation.json");
+	public ResourceLocation getAnimationResource(MohastEntity animatable) {
+		return new ResourceLocation(DarkWatersMod.MODID, "animations/mohast.animation.json");
 	}
 
 	@Override
-	public Identifier getModelResource(MohastEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "geo/mohast.geo.json");
+	public ResourceLocation getModelResource(MohastEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "geo/mohast.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureResource(MohastEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "textures/entity/mohast.png");
+	public ResourceLocation getTextureResource(MohastEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/mohast.png");
+	}
+
+	@Override
+	public RenderType getRenderType(MohastEntity animatable, ResourceLocation texture) {
+		return RenderType.entityTranslucent(getTextureResource(animatable));
 	}
 
 }

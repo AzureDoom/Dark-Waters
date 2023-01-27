@@ -32,11 +32,12 @@
 		"darkwaters.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.12.5",
+		"fabricloader": ">=0.14.11",
 		"fabric": "*",
-		"minecraft": ">=1.19.1",
+		"minecraft": ">=1.19.3",
 		"java": ">=17",
-		"geckolib3": ">=3.0.35"
+		"smartbrainlib": ">=1.7.4",
+		"azurelib": ">=1.0.1"
 	},
 	"accessWidener": "darkwaters.accesswidener"
 }

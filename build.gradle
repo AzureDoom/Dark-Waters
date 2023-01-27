@@ -1,6 +1,16 @@
+buildscript {
+    repositories {
+    	maven { url  = 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.0"
+    }
+}
+
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -18,20 +28,39 @@ group = project.maven_group
 
 repositories {
 	maven { url "https://cfa2.cursemaven.com" }
-    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    maven { url 'https://dl.cloudsmith.io/public/azuredoom-mods/azurelib/maven/' }
     maven { url "https://maven.shedaniel.me/" }
     maven { url 'https://plugins.gradle.org/m2/' }
     maven { url "https://api.modrinth.com/maven" }
     maven { url "https://maven.terraformersmc.com" }
+    maven { url "https://maven.parchmentmc.org" }
+}
+
+configurations {
+    shade
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.19.3:2022.12.18@zip")
+    }
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
-    modImplementation "software.bernie.geckolib:geckolib-fabric-1.19:3.1.35"
-	modImplementation ("com.terraformersmc:modmenu:4.0.6")
+  	modImplementation 'mod.azure.azurelib:azurelib-fabric-1.19.3:1.0.1'
+	modImplementation "maven.modrinth:midnightlib:1.1.0-fabric"
+    shade group: 'maven.modrinth', name: 'midnightlib', version: '1.1.0-fabric'
+	modImplementation ("com.terraformersmc:modmenu:5.0.2")
+	modImplementation "curse.maven:SBL-661293:4277537-sources-4277538"
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    from sourceSets.main.output
+    duplicatesStrategy = 'exclude'
+    relocate 'eu.midnightdust', 'mod.azure.darkwaters.shadowed.midnightlib'
+    classifier 'dev'
 }
 
 processResources {
@@ -58,6 +87,15 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+}
+
+artifacts {
+    archives shadowJar
+}
+
+remapJar {
+    dependsOn(shadowJar)
+    inputFile = shadowJar.archiveFile
 }
 
 processResources {
@@ -89,14 +127,14 @@ if (file('key.properties').exists()) {
         	releaseType = "${curse_release}"
         	changelogType = 'text'
         	changelog = file('CHANGELOG.txt')
-			addGameVersion("1.19.1")
-			addGameVersion("1.19.2")
+			addGameVersion("1.19.3")
 			addGameVersion("Fabric")
 			addGameVersion("Java 17")
 
         	relations {
             	requiredDependency 'fabric-api'  
-            	requiredDependency 'geckolib' 
+            	requiredDependency 'azurelib' 
+            	requiredDependency 'smartbrainlib' 
         	}
         	mainArtifact(remapJar)
 
@@ -135,13 +173,14 @@ if (file('key.properties').exists()) {
 		token = modrinthProp.getProperty('modrinthKey')
 		projectId = 'pe7gyI14' 
 		versionNumber = project.mod_version 
-		versionName = 'Fabric 1.19.2'
+		versionName = 'Fabric/Quilt 1.19.3'
 		uploadFile = remapJar 
 		changelog = rootProject.file("changelog.txt").text
-		gameVersions = ['1.19.2']
-		loaders = ['fabric']
+		gameVersions = ['1.19.3']
+		loaders = ['fabric','quilt']
 		dependencies { 
-        	required.project "geckolib"
+        	required.project "azurelib"
+        	required.project "smartbrainlib"
         	required.project "fabric-api"
             optional.project "modmenu"
             optional.project "roughly-enough-items"

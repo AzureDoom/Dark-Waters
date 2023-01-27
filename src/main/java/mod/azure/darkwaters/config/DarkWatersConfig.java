@@ -1,6 +1,8 @@
 package mod.azure.darkwaters.config;
 
-public class DarkWatersConfig extends CustomMidnightConfig {
+import eu.midnightdust.lib.config.MidnightConfig;
+
+public class DarkWatersConfig extends MidnightConfig {
 
 	@Entry
 	public static boolean require_storm_to_spawn = true;

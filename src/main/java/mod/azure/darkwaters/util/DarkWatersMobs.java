@@ -10,47 +10,48 @@ import mod.azure.darkwaters.entity.MohastEntity;
 import mod.azure.darkwaters.entity.SightHunterEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 
 public class DarkWatersMobs {
 
-	public static final EntityType<AberrationEntity> ABERRATION = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "aberration"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, AberrationEntity::new)
+	public static final EntityType<AberrationEntity> ABERRATION = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "aberration"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, AberrationEntity::new)
 					.dimensions(EntityDimensions.fixed(0.9f, 2.05F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
-	public static final EntityType<ManarawEntity> MANARAW = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "manaraw"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ManarawEntity::new)
-					.dimensions(EntityDimensions.changing(15.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+	public static final EntityType<ManarawEntity> MANARAW = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "manaraw"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, ManarawEntity::new)
+					.dimensions(EntityDimensions.scalable(15.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
-	public static final EntityType<MohastEntity> MOHAST = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "mohast"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MohastEntity::new)
-					.dimensions(EntityDimensions.changing(2.2f, 0.65F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+	public static final EntityType<MohastEntity> MOHAST = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "mohast"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, MohastEntity::new)
+					.dimensions(EntityDimensions.scalable(2.2f, 0.65F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
-	public static final EntityType<SightHunterEntity> SIGHT_HUNTER = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "sight_hunter"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, SightHunterEntity::new)
-					.dimensions(EntityDimensions.changing(4.6f, 1.45F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+	public static final EntityType<SightHunterEntity> SIGHT_HUNTER = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "sight_hunter"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, SightHunterEntity::new)
+					.dimensions(EntityDimensions.scalable(4.6f, 1.45F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
-	public static final EntityType<CraekenEntity> CRAEKEN = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "craeken"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, CraekenEntity::new)
-					.dimensions(EntityDimensions.changing(4.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+	public static final EntityType<CraekenEntity> CRAEKEN = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "craeken"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, CraekenEntity::new)
+					.dimensions(EntityDimensions.scalable(4.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
-	public static final EntityType<MiraidEntity> MIRAID = Registry.register(Registry.ENTITY_TYPE,
-			new Identifier(DarkWatersMod.MODID, "miraid"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MiraidEntity::new)
+	public static final EntityType<MiraidEntity> MIRAID = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+			new ResourceLocation(DarkWatersMod.MODID, "miraid"),
+			FabricEntityTypeBuilder.create(MobCategory.MONSTER, MiraidEntity::new)
 					.dimensions(EntityDimensions.fixed(4.6f, 2.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
 	public static final EntityType<MiraidHallucinationEntity> MIRAID_HALLUCINATION = Registry
-			.register(Registry.ENTITY_TYPE, new Identifier(DarkWatersMod.MODID, "miraid_hallucination"),
-					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, MiraidHallucinationEntity::new)
+			.register(BuiltInRegistries.ENTITY_TYPE, new ResourceLocation(DarkWatersMod.MODID, "miraid_hallucination"),
+					FabricEntityTypeBuilder.create(MobCategory.MONSTER, MiraidHallucinationEntity::new)
 							.dimensions(EntityDimensions.fixed(1.6f, 3.45F)).trackRangeBlocks(90).trackedUpdateRate(1)
 							.build());
 

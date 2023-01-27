@@ -8,30 +8,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import mod.azure.darkwaters.DarkWatersMod;
-import net.minecraft.client.render.BackgroundRenderer;
-import net.minecraft.client.render.BackgroundRenderer.FogType;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.FogRenderer.FogMode;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
-@Mixin(BackgroundRenderer.class)
+@Mixin(FogRenderer.class)
 public class FogMixin {
 
-	@Inject(method = "applyFog", at = @At("TAIL"))
-	private static void stormMixin(Camera camera, FogType fogType, float viewDistance,
-			boolean thickFog, float tickDelta, CallbackInfo ci) {
-		Entity entity = camera.getFocusedEntity();
+	@Inject(method = "setupFog", at = @At("TAIL"))
+	private static void stormMixin(Camera camera, FogMode fogType, float viewDistance, boolean thickFog,
+			float tickDelta, CallbackInfo ci) {
+		Entity entity = camera.getEntity();
 		float y;
 		float ab;
-		if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(DarkWatersMod.STORMDARKNESS)
-				&& !((PlayerEntity) camera.getFocusedEntity()).isSpectator()
-				&& !((PlayerEntity) camera.getFocusedEntity()).isCreative()) {
-			int m = ((LivingEntity) entity).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
-			float n = MathHelper.lerp(Math.min(1.0F, (float) m / 20.0F), viewDistance, 10.0F);
-			if (fogType == BackgroundRenderer.FogType.FOG_SKY) {
+		if (entity instanceof LivingEntity && ((LivingEntity) entity).hasEffect(DarkWatersMod.STORMDARKNESS)
+				&& !((Player) camera.getEntity()).isSpectator() && !((Player) camera.getEntity()).isCreative()) {
+			int m = ((LivingEntity) entity).getEffect(DarkWatersMod.STORMDARKNESS).getDuration();
+			float n = Mth.lerp(Math.min(1.0F, (float) m / 20.0F), viewDistance, 10.0F);
+			if (fogType == FogRenderer.FogMode.FOG_SKY) {
 				y = 0.0F;
 				ab = n * 0.8F;
 			} else {
@@ -44,17 +43,16 @@ public class FogMixin {
 	}
 
 	@SuppressWarnings("unused")
-	@Inject(method = "render", at = @At("HEAD"))
-	private static void stormRenderMixin(Camera camera, float tickDelta, ClientWorld world, int viewDistance, float skyDarkness,
-			CallbackInfo ci) {
+	@Inject(method = "setupColor\r\n" + "", at = @At("HEAD"))
+	private static void stormRenderMixin(Camera camera, float tickDelta, ClientLevel world, int viewDistance,
+			float skyDarkness, CallbackInfo ci) {
 		int af;
-		double d = (camera.getPos().y - (double) world.getBottomY())
-				* world.getLevelProperties().getHorizonShadingRatio();
-		if (camera.getFocusedEntity() instanceof LivingEntity
-				&& ((LivingEntity) camera.getFocusedEntity()).hasStatusEffect(DarkWatersMod.STORMDARKNESS)
-				&& !((PlayerEntity) camera.getFocusedEntity()).isSpectator()
-				&& !((PlayerEntity) camera.getFocusedEntity()).isCreative()) {
-			af = ((LivingEntity) camera.getFocusedEntity()).getStatusEffect(DarkWatersMod.STORMDARKNESS).getDuration();
+		double d = (camera.getPosition().y - (double) world.getMinBuildHeight())
+				* world.getLevelData().getClearColorScale();
+		if (camera.getEntity() instanceof LivingEntity
+				&& ((LivingEntity) camera.getEntity()).hasEffect(DarkWatersMod.STORMDARKNESS)
+				&& !((Player) camera.getEntity()).isSpectator() && !((Player) camera.getEntity()).isCreative()) {
+			af = ((LivingEntity) camera.getEntity()).getEffect(DarkWatersMod.STORMDARKNESS).getDuration();
 			if (af < 20) {
 				d *= (double) (1.0F - (float) af / 10.0F);
 			} else {

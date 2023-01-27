@@ -1,25 +1,31 @@
 package mod.azure.darkwaters.client.models;
 
+import mod.azure.azurelib.model.GeoModel;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.AberrationEntity;
-import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 
-public class AberrationModel extends AnimatedTickingGeoModel<AberrationEntity> {
+public class AberrationModel extends GeoModel<AberrationEntity> {
 
 	@Override
-	public Identifier getAnimationResource(AberrationEntity animatable) {
-		return new Identifier(DarkWatersMod.MODID, "animations/aberration.animation.json");
+	public ResourceLocation getAnimationResource(AberrationEntity animatable) {
+		return new ResourceLocation(DarkWatersMod.MODID, "animations/aberration.animation.json");
 	}
 
 	@Override
-	public Identifier getModelResource(AberrationEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "geo/aberration.geo.json");
+	public ResourceLocation getModelResource(AberrationEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "geo/aberration.geo.json");
 	}
 
 	@Override
-	public Identifier getTextureResource(AberrationEntity object) {
-		return new Identifier(DarkWatersMod.MODID, "textures/entity/aberration.png");
+	public ResourceLocation getTextureResource(AberrationEntity object) {
+		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/aberration.png");
+	}
+
+	@Override
+	public RenderType getRenderType(AberrationEntity animatable, ResourceLocation texture) {
+		return RenderType.entityTranslucent(getTextureResource(animatable));
 	}
 
 }

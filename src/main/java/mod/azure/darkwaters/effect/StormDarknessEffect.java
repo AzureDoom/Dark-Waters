@@ -1,11 +1,11 @@
 package mod.azure.darkwaters.effect;
 
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class StormDarknessEffect extends StatusEffect {
+public class StormDarknessEffect extends MobEffect {
 
-	public StormDarknessEffect(StatusEffectCategory type, int color) {
+	public StormDarknessEffect(MobEffectCategory type, int color) {
 		super(type, color);
 	}
 

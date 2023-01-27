@@ -1,92 +1,139 @@
 package mod.azure.darkwaters.entity;
 
+import java.util.List;
+
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import mod.azure.azurelib.animatable.GeoEntity;
+import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
+import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
+import mod.azure.azurelib.core.animation.Animation.LoopType;
+import mod.azure.azurelib.core.animation.AnimationController;
+import mod.azure.azurelib.core.animation.RawAnimation;
+import mod.azure.azurelib.core.object.PlayState;
+import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.darkwaters.config.DarkWatersConfig;
-import mod.azure.darkwaters.entity.ai.goals.WaterAttackGoal;
+import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.world.World;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.IAnimationTickable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.tslat.smartbrainlib.api.SmartBrainOwner;
+import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
+import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.custom.UnreachableTargetSensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyPlayersSensor;
 
-public class CraekenEntity extends BaseWaterEntity implements IAnimatable, IAnimationTickable {
+public class CraekenEntity extends BaseWaterEntity implements GeoEntity, SmartBrainOwner<CraekenEntity> {
 
-	private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
 
-	public CraekenEntity(EntityType<? extends BaseWaterEntity> entityType, World world) {
+	public CraekenEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.experiencePoints = DarkWatersConfig.craeken_exp;
+		this.xpReward = DarkWatersConfig.craeken_exp;
 	}
 
-	public static DefaultAttributeContainer.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, DarkWatersConfig.craeken_health)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, DarkWatersConfig.craeken_attack_damage);
-	}
-
-	public <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("moving", EDefaultLoopTypes.LOOP));
-			return PlayState.CONTINUE;
-		}
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", EDefaultLoopTypes.LOOP));
-		return PlayState.CONTINUE;
-	}
-
-	public <E extends IAnimatable> PlayState attack(AnimationEvent<E> event) {
-		if (this.dataTracker.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDead())) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", EDefaultLoopTypes.LOOP));
-			return PlayState.CONTINUE;
-		}
-		return PlayState.STOP;
+	public static AttributeSupplier.Builder createMobAttributes() {
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.craeken_health)
+				.add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.craeken_attack_damage);
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<CraekenEntity>(this, "controller", 0, this::predicate));
-		data.addAnimationController(new AnimationController<CraekenEntity>(this, "controller1", 0, this::attack));
+	protected Brain.Provider<?> brainProvider() {
+		return new SmartBrainProvider<>(this);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return this.factory;
+	protected void customServerAiStep() {
+		tickBrain(this);
 	}
 
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(1, new WaterAttackGoal(this, 1, true, false));
+	@Override
+	public List<ExtendedSensor<CraekenEntity>> getSensors() {
+		return ObjectArrayList.of(new NearbyPlayersSensor<>(),
+				new NearbyLivingEntitySensor<CraekenEntity>().setPredicate((target, entity) -> target instanceof Player
+						|| !(target instanceof BaseWaterEntity) || target instanceof Villager),
+				new HurtBySensor<>(), new UnreachableTargetSensor<CraekenEntity>());
+	}
+
+	@Override
+	public BrainActivityGroup<CraekenEntity> getCoreTasks() {
+		return BrainActivityGroup.coreTasks(new LookAtTarget<>(), new MoveToWalkTarget<>());
+	}
+
+	@Override
+	public BrainActivityGroup<CraekenEntity> getIdleTasks() {
+		return BrainActivityGroup.idleTasks(
+				new FirstApplicableBehaviour<CraekenEntity>(new TargetOrRetaliate<>(),
+						new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive()
+								|| target instanceof Player && ((Player) target).isCreative()),
+						new SetRandomLookTarget<>()),
+				new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1),
+						new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+	}
+
+	@Override
+	public BrainActivityGroup<CraekenEntity> getFightTasks() {
+		return BrainActivityGroup.fightTasks(
+				new InvalidateAttackTarget<>().stopIf(
+						target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()),
+				new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5)
+						.whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
+	}
+
+	@Override
+	public void registerControllers(ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "idle_controller", 0, event -> {
+			if (event.isMoving())
+				return event.setAndContinue(RawAnimation.begin().thenLoop("moving"));
+			if ((this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
+				return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
+			return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
+		})).add(new AnimationController<>(this, "attack_controller", 0, event -> {
+			if (this.entityData.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
+				return event.setAndContinue(RawAnimation.begin().then("attack", LoopType.LOOP));
+			return PlayState.STOP;
+		}));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.cache;
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_GENERIC_SWIM;
+		return SoundEvents.GENERIC_SWIM;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_GENERIC_DEATH;
+		return SoundEvents.GENERIC_DEATH;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
 		return r == 1 ? DarkWatersSounds.CRAEKEN_HURT1 : DarkWatersSounds.CRAEKEN_HURT2;
-	}
-
-	@Override
-	public int tickTimer() {
-		return age;
 	}
 
 }
