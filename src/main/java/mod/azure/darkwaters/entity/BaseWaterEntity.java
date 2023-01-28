@@ -155,7 +155,7 @@ public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isThundering())
+		if (!this.level.isThundering() && DarkWatersConfig.require_storm_to_spawn == true)
 			aliveAfterStorm++;
 		if (aliveAfterStorm >= 1200)
 			this.kill();
