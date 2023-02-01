@@ -1,6 +1,7 @@
 package mod.azure.darkwaters.entity;
 
 import java.util.List;
+import java.util.SplittableRandom;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.animatable.GeoEntity;
@@ -16,8 +17,11 @@ import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -32,7 +36,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
@@ -89,8 +92,7 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 						new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive()
 								|| target instanceof Player && ((Player) target).isCreative()),
 						new SetRandomLookTarget<>()),
-				new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1),
-						new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+				new OneRandomBehaviour<>(new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
 	}
 
 	@Override
@@ -100,6 +102,20 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 						target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()),
 				new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5)
 						.whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
+	}
+
+	@Override
+	public void positionRider(Entity passenger) {
+		super.positionRider(passenger);
+		if (passenger instanceof LivingEntity) {
+			LivingEntity mob = (LivingEntity) passenger;
+			SplittableRandom random = new SplittableRandom();
+			float f = Mth.sin(this.yBodyRot * ((float) Math.PI / 180));
+			float g = Mth.cos(this.yBodyRot * ((float) Math.PI / 180));
+			passenger.setPos(this.getX() + (double) ((-1.05f) * f),
+					this.getY() + (double) (random.nextFloat(0.14F, 0.15F)), this.getZ() - (double) (-1.05f) * g);
+			mob.yBodyRot = this.yBodyRot;
+		}
 	}
 
 	@Override

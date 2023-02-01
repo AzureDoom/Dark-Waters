@@ -10,6 +10,7 @@ import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.darkwaters.entity.AberrationEntity;
 import mod.azure.darkwaters.entity.BaseWaterEntity;
+import mod.azure.darkwaters.entity.ManarawEntity;
 import mod.azure.darkwaters.entity.MohastEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -55,7 +56,7 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 	protected boolean checkExtraStartConditions(ServerLevel level, E entity) {
 		this.target = BrainUtils.getTargetOfEntity(entity);
 
-		return entity.getSensing().hasLineOfSight(this.target) && entity.isWithinMeleeAttackRange(this.target);
+		return entity.getSensing().hasLineOfSight(this.target) && this.isWithinMeleeAttackRange(entity, this.target);
 	}
 
 	@Override
@@ -90,6 +91,22 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 		if (!(entity instanceof MohastEntity) || !(entity instanceof AberrationEntity))
 			entity.doHurtTarget(this.target);
 
+	}
+
+	public double getMeleeAttackRangeSqr(E entity, LivingEntity target) {
+		if (entity instanceof ManarawEntity)
+			return entity.getBbWidth() * 4.0f * (entity.getBbWidth() * 4.0f) + target.getBbWidth();
+		return entity.getBbWidth() * 2.0f * (entity.getBbWidth() * 2.0f) + target.getBbWidth();
+	}
+
+	public double getPerceivedTargetDistanceSquareForMeleeAttack(E entity, LivingEntity target) {
+		return Math.max(entity.distanceToSqr(target.getMeleeAttackReferencePosition()),
+				entity.distanceToSqr(target.position()));
+	}
+
+	public boolean isWithinMeleeAttackRange(E entity, LivingEntity target) {
+		double d = this.getPerceivedTargetDistanceSquareForMeleeAttack(entity, target);
+		return d <= this.getMeleeAttackRangeSqr(entity, target);
 	}
 
 }

@@ -27,7 +27,7 @@ public class DarkWatersMobs {
 	public static final EntityType<ManarawEntity> MANARAW = Registry.register(BuiltInRegistries.ENTITY_TYPE,
 			new ResourceLocation(DarkWatersMod.MODID, "manaraw"),
 			FabricEntityTypeBuilder.create(MobCategory.MONSTER, ManarawEntity::new)
-					.dimensions(EntityDimensions.scalable(15.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+					.dimensions(EntityDimensions.scalable(3.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
 
 	public static final EntityType<MohastEntity> MOHAST = Registry.register(BuiltInRegistries.ENTITY_TYPE,
 			new ResourceLocation(DarkWatersMod.MODID, "mohast"),

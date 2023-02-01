@@ -3,9 +3,9 @@ package mod.azure.darkwaters;
 import java.awt.Color;
 
 import eu.midnightdust.lib.config.MidnightConfig;
+import mod.azure.azurelib.items.AzureSpawnEgg;
 import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.effect.StormDarknessEffect;
-import mod.azure.darkwaters.items.DarkSpawnEgg;
 import mod.azure.darkwaters.util.DarkWatersMobs;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import mod.azure.darkwaters.util.DarkWatersSpawning;
@@ -37,12 +37,12 @@ public class DarkWatersMod implements ModInitializer {
 				entries.accept(DarkWatersMod.CRAEKEN_SPAWN_EGG);
 				entries.accept(DarkWatersMod.MIRAID_SPAWN_EGG);
 			}).build();
-	public static DarkSpawnEgg ABERRATION_SPAWN_EGG;
-	public static DarkSpawnEgg MANARAW_SPAWN_EGG;
-	public static DarkSpawnEgg MOHAST_SPAWN_EGG;
-	public static DarkSpawnEgg SIGHT_HUNTER_SPAWN_EGG;
-	public static DarkSpawnEgg CRAEKEN_SPAWN_EGG;
-	public static DarkSpawnEgg MIRAID_SPAWN_EGG;
+	public static AzureSpawnEgg ABERRATION_SPAWN_EGG;
+	public static AzureSpawnEgg MANARAW_SPAWN_EGG;
+	public static AzureSpawnEgg MOHAST_SPAWN_EGG;
+	public static AzureSpawnEgg SIGHT_HUNTER_SPAWN_EGG;
+	public static AzureSpawnEgg CRAEKEN_SPAWN_EGG;
+	public static AzureSpawnEgg MIRAID_SPAWN_EGG;
 
 	@Override
 	public void onInitialize() {
@@ -52,18 +52,18 @@ public class DarkWatersMod implements ModInitializer {
 		DarkWatersSpawning.addSpawnEntries();
 		ABERRATION_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM,
 				new ResourceLocation(MODID, "aberration_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.ABERRATION, 0x150056, 0x826ccc));
+				new AzureSpawnEgg(DarkWatersMobs.ABERRATION, 0x150056, 0x826ccc));
 		MANARAW_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MODID, "manaraw_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.MANARAW, 0x181c59, 0x636b6d));
+				new AzureSpawnEgg(DarkWatersMobs.MANARAW, 0x181c59, 0x636b6d));
 		MOHAST_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MODID, "mohast_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.MOHAST, 0x477385, 0xacb7b7));
+				new AzureSpawnEgg(DarkWatersMobs.MOHAST, 0x477385, 0xacb7b7));
 		SIGHT_HUNTER_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM,
 				new ResourceLocation(MODID, "sighthunter_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.SIGHT_HUNTER, 0x01293a, 0x808f95));
+				new AzureSpawnEgg(DarkWatersMobs.SIGHT_HUNTER, 0x01293a, 0x808f95));
 		CRAEKEN_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MODID, "craeken_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.CRAEKEN, 0xada7a2, 0xcee3e3));
+				new AzureSpawnEgg(DarkWatersMobs.CRAEKEN, 0xada7a2, 0xcee3e3));
 		MIRAID_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MODID, "miraid_spawn_egg"),
-				new DarkSpawnEgg(DarkWatersMobs.MIRAID, 0x5d5d6e, 0xd6d6d6));
+				new AzureSpawnEgg(DarkWatersMobs.MIRAID, 0x5d5d6e, 0xd6d6d6));
 		Registry.register(BuiltInRegistries.MOB_EFFECT, new ResourceLocation(MODID, "storm_darkness"), STORMDARKNESS);
 		DarkWatersMobs.init();
 	}

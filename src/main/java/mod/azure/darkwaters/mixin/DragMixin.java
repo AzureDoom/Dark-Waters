@@ -23,9 +23,8 @@ public abstract class DragMixin extends Entity {
 	}
 
 	private void updatePosition(Entity passenger, Entity.MoveFunction positionUpdater) {
-		if (this.hasPassenger(passenger)) {
+		if (this.hasPassenger(passenger))
 			positionUpdater.accept(this, this.getX(), this.getY() - 0.1D, this.getZ());
-		}
 	}
 
 }

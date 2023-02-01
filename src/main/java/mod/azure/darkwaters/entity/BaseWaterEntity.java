@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import mod.azure.darkwaters.config.DarkWatersConfig;
-import mod.azure.darkwaters.entity.pathing.AzureNavigation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundSetPassengersPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +32,7 @@ import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -149,7 +149,7 @@ public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 	}
 
 	public PathNavigation createNavigation(Level world) {
-		return new AzureNavigation(this, world);
+		return new WaterBoundPathNavigation(this, world);
 	}
 
 	@Override
