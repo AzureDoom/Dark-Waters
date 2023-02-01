@@ -1,6 +1,6 @@
-v.0.0.11
+v.0.0.12
 
-- Fixes despawning when the config for requring storms to spawn is set to false. 
+- Moved Spawn Egg code to AzureLib
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**
