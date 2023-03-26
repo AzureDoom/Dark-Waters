@@ -9,15 +9,16 @@ import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
-import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -54,8 +55,7 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.manaraw_health)
-				.add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.manaraw_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.manaraw_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.manaraw_attack_damage);
 	}
 
 	@Override
@@ -70,10 +70,7 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	@Override
 	public List<ExtendedSensor<ManarawEntity>> getSensors() {
-		return ObjectArrayList.of(new NearbyPlayersSensor<>(),
-				new NearbyLivingEntitySensor<ManarawEntity>().setPredicate((target, entity) -> target instanceof Player
-						|| !(target instanceof BaseWaterEntity) || target instanceof Villager),
-				new HurtBySensor<>(), new UnreachableTargetSensor<ManarawEntity>());
+		return ObjectArrayList.of(new NearbyPlayersSensor<>(), new NearbyLivingEntitySensor<ManarawEntity>().setPredicate((target, entity) -> target instanceof Player || !(target instanceof BaseWaterEntity) || target instanceof Villager), new HurtBySensor<>(), new UnreachableTargetSensor<ManarawEntity>());
 	}
 
 	@Override
@@ -83,38 +80,54 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	@Override
 	public BrainActivityGroup<ManarawEntity> getIdleTasks() {
-		return BrainActivityGroup.idleTasks(
-				new FirstApplicableBehaviour<ManarawEntity>(new TargetOrRetaliate<>(),
-						new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive()
-								|| target instanceof Player && ((Player) target).isCreative()),
-						new SetRandomLookTarget<>()),
-				new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1),
-						new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<ManarawEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetRandomLookTarget<>()), new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1), new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
 	}
 
 	@Override
 	public BrainActivityGroup<ManarawEntity> getFightTasks() {
-		return BrainActivityGroup.fightTasks(
-				new InvalidateAttackTarget<>().stopIf(
-						target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()),
-				new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5)
-						.whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
+		return BrainActivityGroup.fightTasks(new InvalidateAttackTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
 	}
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
+		var isAttacking = this.swinging;
+		var isDead = this.dead || this.getHealth() < 0.01 || this.isDeadOrDying();
 		controllers.add(new AnimationController<>(this, "idle_controller", 0, event -> {
-			if (event.isMoving())
+			if (this.swinging && !isDead)
+				return event.setAndContinue(RawAnimation.begin().then(AttackType.animationMappings.get(getCurrentAttackType()), LoopType.PLAY_ONCE).then("engulf_close", LoopType.PLAY_ONCE));
+			if (event.isMoving() && !isDead && !isAttacking)
 				return event.setAndContinue(RawAnimation.begin().thenLoop("moving"));
-			if ((this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
+			if (isDead)
 				return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
 			return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
-		})).add(new AnimationController<>(this, "attack_controller", 0, event -> {
-			if (this.entityData.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
-				return event.setAndContinue(RawAnimation.begin().then("engulf_begin", LoopType.PLAY_ONCE)
-						.then("engulf_close", LoopType.LOOP));
-			return PlayState.STOP;
 		}));
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (attackProgress > 0) {
+			attackProgress--;
+			if (!level.isClientSide && attackProgress <= 0)
+				setCurrentAttackType(AttackType.NONE);
+		}
+
+		if (attackProgress == 0 && swinging)
+			attackProgress = 10;
+
+		if (!level.isClientSide && getCurrentAttackType() == AttackType.NONE)
+			setCurrentAttackType(AttackType.ENGULF);
+	}
+
+	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity livingEntity) {
+		return this.getBbWidth() * 1.0f * (this.getBbWidth() * 1.0f + livingEntity.getBbWidth());
+	}
+
+	@Override
+	public boolean isWithinMeleeAttackRange(LivingEntity livingEntity) {
+		double d = this.distanceToSqr(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+		return d <= this.getMeleeAttackRangeSqr(livingEntity);
 	}
 
 	@Override

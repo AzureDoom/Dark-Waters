@@ -10,9 +10,9 @@ import mod.azure.azurelib.core.animation.AnimatableManager.ControllerRegistrar;
 import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
-import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.sounds.SoundEvent;
@@ -57,8 +57,7 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.aberration_health)
-				.add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.aberration_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.aberration_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.aberration_attack_damage);
 	}
 
 	@Override
@@ -73,11 +72,7 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 
 	@Override
 	public List<ExtendedSensor<AberrationEntity>> getSensors() {
-		return ObjectArrayList.of(new NearbyPlayersSensor<>(),
-				new NearbyLivingEntitySensor<AberrationEntity>()
-						.setPredicate((target, entity) -> target instanceof Player
-								|| !(target instanceof BaseWaterEntity) || target instanceof Villager),
-				new HurtBySensor<>(), new UnreachableTargetSensor<AberrationEntity>());
+		return ObjectArrayList.of(new NearbyPlayersSensor<>(), new NearbyLivingEntitySensor<AberrationEntity>().setPredicate((target, entity) -> target instanceof Player || !(target instanceof BaseWaterEntity) || target instanceof Villager), new HurtBySensor<>(), new UnreachableTargetSensor<AberrationEntity>());
 	}
 
 	@Override
@@ -87,55 +82,72 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 
 	@Override
 	public BrainActivityGroup<AberrationEntity> getIdleTasks() {
-		return BrainActivityGroup.idleTasks(
-				new FirstApplicableBehaviour<AberrationEntity>(new TargetOrRetaliate<>(),
-						new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive()
-								|| target instanceof Player && ((Player) target).isCreative()),
-						new SetRandomLookTarget<>()),
-				new OneRandomBehaviour<>(new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<AberrationEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetRandomLookTarget<>()), new OneRandomBehaviour<>(new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
 	}
 
 	@Override
 	public BrainActivityGroup<AberrationEntity> getFightTasks() {
-		return BrainActivityGroup.fightTasks(
-				new InvalidateAttackTarget<>().stopIf(
-						target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()),
-				new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5)
-						.whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
+		return BrainActivityGroup.fightTasks(new InvalidateAttackTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
 	}
 
 	@Override
 	public void positionRider(Entity passenger) {
 		super.positionRider(passenger);
 		if (passenger instanceof LivingEntity) {
-			LivingEntity mob = (LivingEntity) passenger;
-			SplittableRandom random = new SplittableRandom();
-			float f = Mth.sin(this.yBodyRot * ((float) Math.PI / 180));
-			float g = Mth.cos(this.yBodyRot * ((float) Math.PI / 180));
-			passenger.setPos(this.getX() + (double) ((-1.05f) * f),
-					this.getY() + (double) (random.nextFloat(0.14F, 0.15F)), this.getZ() - (double) (-1.05f) * g);
+			var mob = (LivingEntity) passenger;
+			var random = new SplittableRandom();
+			var f = Mth.sin(this.yBodyRot * ((float) Math.PI / 180));
+			var g = Mth.cos(this.yBodyRot * ((float) Math.PI / 180));
+			passenger.setPos(this.getX() + (double) ((-0.45f) * f), this.getY() + (double) (random.nextFloat(0.14F, 0.15F)), this.getZ() - (double) (-0.45f) * g);
 			mob.yBodyRot = this.yBodyRot;
 		}
 	}
 
 	@Override
 	public void registerControllers(ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, "idle_controller", 5, event -> {
-			if (event.isMoving())
+		var isAttacking = this.swinging;
+		var isDead = this.dead || this.getHealth() < 0.01 || this.isDeadOrDying();
+		controllers.add(new AnimationController<>(this, "idle_controller", 0, event -> {
+			if (this.swinging && !isDead)
+				return event.setAndContinue(RawAnimation.begin().then(AttackType.animationMappings.get(getCurrentAttackType()), LoopType.PLAY_ONCE));
+			if (event.isMoving() && !isDead && !isAttacking)
 				return event.setAndContinue(RawAnimation.begin().thenLoop("moving"));
-			if ((this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
+			if (isDead)
 				return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
 			return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
-		})).add(new AnimationController<>(this, "attack_controller", 0, event -> {
-			if (this.entityData.get(STATE) == 1 && !(this.dead || this.getHealth() < 0.01 || this.isDeadOrDying()))
-				return event.setAndContinue(RawAnimation.begin().then("grab_attack", LoopType.LOOP));
-			return PlayState.STOP;
 		}));
 	}
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return this.cache;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (attackProgress > 0) {
+			attackProgress--;
+			if (!level.isClientSide && attackProgress <= 0)
+				setCurrentAttackType(AttackType.NONE);
+		}
+
+		if (attackProgress == 0 && swinging)
+			attackProgress = 10;
+
+		if (!level.isClientSide && getCurrentAttackType() == AttackType.NONE)
+			setCurrentAttackType(AttackType.GRAB_ATTACK);
+	}
+
+	@Override
+	public double getMeleeAttackRangeSqr(LivingEntity livingEntity) {
+		return this.getBbWidth() * 1.0f * (this.getBbWidth() * 1.0f + livingEntity.getBbWidth());
+	}
+
+	@Override
+	public boolean isWithinMeleeAttackRange(LivingEntity livingEntity) {
+		double d = this.distanceToSqr(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+		return d <= this.getMeleeAttackRangeSqr(livingEntity);
 	}
 
 	@Override

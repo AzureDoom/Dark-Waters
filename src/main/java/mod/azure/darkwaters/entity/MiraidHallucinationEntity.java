@@ -26,8 +26,7 @@ public class MiraidHallucinationEntity extends BaseWaterEntity implements GeoEnt
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 70.0D).add(Attributes.ATTACK_DAMAGE,
-				7.0D);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 70.0D).add(Attributes.ATTACK_DAMAGE, 7.0D);
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class MiraidHallucinationEntity extends BaseWaterEntity implements GeoEnt
 	@Override
 	public void tick() {
 		super.tick();
-		final AABB aabb = new AABB(this.blockPosition().above()).inflate(64D, 64D, 64D);
+		final var aabb = new AABB(this.blockPosition().above()).inflate(64D, 64D, 64D);
 		this.getCommandSenderWorld().getEntities(this, aabb).forEach(e -> {
 			if (!(e instanceof MiraidEntity))
 				this.kill();

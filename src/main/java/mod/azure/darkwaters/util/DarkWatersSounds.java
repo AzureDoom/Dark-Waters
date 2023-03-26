@@ -3,7 +3,6 @@ package mod.azure.darkwaters.util;
 import mod.azure.darkwaters.DarkWatersMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public class DarkWatersSounds {
@@ -46,8 +45,8 @@ public class DarkWatersSounds {
 	public static SoundEvent STORM_END = of("darkwaters.storm_end");
 
 	static SoundEvent of(String id) {
-		SoundEvent sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(DarkWatersMod.MODID, id));
-		Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(DarkWatersMod.MODID, id), sound);
+		SoundEvent sound = SoundEvent.createVariableRangeEvent(DarkWatersMod.modResource(id));
+		Registry.register(BuiltInRegistries.SOUND_EVENT, DarkWatersMod.modResource(id), sound);
 		return sound;
 	}
 }

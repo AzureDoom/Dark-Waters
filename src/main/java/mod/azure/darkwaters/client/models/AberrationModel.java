@@ -10,17 +10,17 @@ public class AberrationModel extends GeoModel<AberrationEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(AberrationEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/aberration.animation.json");
+		return DarkWatersMod.modResource("animations/aberration.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(AberrationEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/aberration.geo.json");
+		return DarkWatersMod.modResource("geo/aberration.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(AberrationEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/aberration.png");
+		return DarkWatersMod.modResource("textures/entity/aberration.png");
 	}
 
 	@Override

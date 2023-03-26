@@ -10,17 +10,17 @@ public class CraekenModel extends GeoModel<CraekenEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(CraekenEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/craeken.animation.json");
+		return DarkWatersMod.modResource("animations/craeken.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(CraekenEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/craeken.geo.json");
+		return DarkWatersMod.modResource("geo/craeken.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(CraekenEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/craeken.png");
+		return DarkWatersMod.modResource("textures/entity/craeken.png");
 	}
 
 	@Override

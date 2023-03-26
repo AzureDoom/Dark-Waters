@@ -1,6 +1,6 @@
-v.0.0.12
+v.0.0.13
 
-- Moved Spawn Egg code to AzureLib
+- Mobs all play attack animations now.
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**

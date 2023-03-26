@@ -10,17 +10,17 @@ public class MohastModel extends GeoModel<MohastEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(MohastEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/mohast.animation.json");
+		return DarkWatersMod.modResource("animations/mohast.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(MohastEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/mohast.geo.json");
+		return DarkWatersMod.modResource("geo/mohast.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(MohastEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/mohast.png");
+		return DarkWatersMod.modResource("textures/entity/mohast.png");
 	}
 
 	@Override

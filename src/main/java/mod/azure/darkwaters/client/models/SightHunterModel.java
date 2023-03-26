@@ -10,17 +10,17 @@ public class SightHunterModel extends GeoModel<SightHunterEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(SightHunterEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/sight_hunter.animation.json");
+		return DarkWatersMod.modResource("animations/sight_hunter.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(SightHunterEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/sight_hunter.geo.json");
+		return DarkWatersMod.modResource("geo/sight_hunter.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(SightHunterEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/sight_hunter.png");
+		return DarkWatersMod.modResource("textures/entity/sight_hunter.png");
 	}
 
 	@Override

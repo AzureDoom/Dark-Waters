@@ -10,17 +10,17 @@ public class ManarawModel extends GeoModel<ManarawEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(ManarawEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/manaraw.animation.json");
+		return DarkWatersMod.modResource("animations/manaraw.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(ManarawEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/manaraw.geo.json");
+		return DarkWatersMod.modResource("geo/manaraw.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(ManarawEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/manaraw.png");
+		return DarkWatersMod.modResource("textures/entity/manaraw.png");
 	}
 
 	@Override

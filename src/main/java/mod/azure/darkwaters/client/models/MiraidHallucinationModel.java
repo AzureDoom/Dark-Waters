@@ -10,18 +10,17 @@ public class MiraidHallucinationModel extends GeoModel<MiraidHallucinationEntity
 
 	@Override
 	public ResourceLocation getAnimationResource(MiraidHallucinationEntity animatable) {
-		return new ResourceLocation(DarkWatersMod.MODID, "animations/miraid_hallucination.animation.json");
+		return DarkWatersMod.modResource("animations/miraid_hallucination.animation.json");
 	}
 
 	@Override
 	public ResourceLocation getModelResource(MiraidHallucinationEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "geo/miraid_hallucination.geo.json");
+		return DarkWatersMod.modResource("geo/miraid_hallucination.geo.json");
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(MiraidHallucinationEntity object) {
-		return new ResourceLocation(DarkWatersMod.MODID, "textures/entity/"
-				+ (object.getTextureState() == true ? "miraid_hallucination_angry" : "miraid_hallucination") + ".png");
+		return DarkWatersMod.modResource("textures/entity/" + (object.getTextureState() == true ? "miraid_hallucination_angry" : "miraid_hallucination") + ".png");
 	}
 
 	@Override

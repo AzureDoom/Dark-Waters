@@ -22,9 +22,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
 public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBehaviour<E> {
-	private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = ObjectArrayList.of(
-			Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT),
-			Pair.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_ABSENT));
+	private static final List<Pair<MemoryModuleType<?>, MemoryStatus>> MEMORY_REQUIREMENTS = ObjectArrayList.of(Pair.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT), Pair.of(MemoryModuleType.ATTACK_COOLING_DOWN, MemoryStatus.VALUE_ABSENT));
 
 	protected Function<E, Integer> attackIntervalSupplier = entity -> 20;
 
@@ -74,8 +72,7 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 
 	@Override
 	protected void doDelayedAction(E entity) {
-		BrainUtils.setForgettableMemory(entity, MemoryModuleType.ATTACK_COOLING_DOWN, true,
-				this.attackIntervalSupplier.apply(entity));
+		BrainUtils.setForgettableMemory(entity, MemoryModuleType.ATTACK_COOLING_DOWN, true, this.attackIntervalSupplier.apply(entity));
 
 		if (this.target == null)
 			return;
@@ -100,8 +97,7 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 	}
 
 	public double getPerceivedTargetDistanceSquareForMeleeAttack(E entity, LivingEntity target) {
-		return Math.max(entity.distanceToSqr(target.getMeleeAttackReferencePosition()),
-				entity.distanceToSqr(target.position()));
+		return Math.max(entity.distanceToSqr(target.getMeleeAttackReferencePosition()), entity.distanceToSqr(target.position()));
 	}
 
 	public boolean isWithinMeleeAttackRange(E entity, LivingEntity target) {
