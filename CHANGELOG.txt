@@ -1,6 +1,7 @@
-v.0.0.13
+v.0.0.14
 
-- Mobs all play attack animations now.
+- Fixed creative tab naming.
+- 1.19.2 port.
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**
