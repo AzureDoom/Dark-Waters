@@ -10,7 +10,7 @@ public class MiraidModel extends GeoModel<MiraidEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(MiraidEntity animatable) {
-		return DarkWatersMod.modResource("animations/miraid.animation.json");
+		return new ResourceLocation("azurelib", "animations/miraid.animation.json");
 	}
 
 	@Override

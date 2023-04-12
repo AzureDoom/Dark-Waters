@@ -10,7 +10,7 @@ public class AberrationModel extends GeoModel<AberrationEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(AberrationEntity animatable) {
-		return DarkWatersMod.modResource("animations/aberration.animation.json");
+		return new ResourceLocation("azurelib", "animations/aberration.animation.json");
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class MohastModel extends GeoModel<MohastEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(MohastEntity animatable) {
-		return DarkWatersMod.modResource("animations/mohast.animation.json");
+		return new ResourceLocation("azurelib", "animations/mohast.animation.json");
 	}
 
 	@Override

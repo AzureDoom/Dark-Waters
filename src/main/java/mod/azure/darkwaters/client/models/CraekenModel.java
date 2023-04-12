@@ -10,7 +10,7 @@ public class CraekenModel extends GeoModel<CraekenEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(CraekenEntity animatable) {
-		return DarkWatersMod.modResource("animations/craeken.animation.json");
+		return new ResourceLocation("azurelib", "animations/craeken.animation.json");
 	}
 
 	@Override

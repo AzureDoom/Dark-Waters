@@ -10,7 +10,7 @@ public class SightHunterModel extends GeoModel<SightHunterEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(SightHunterEntity animatable) {
-		return DarkWatersMod.modResource("animations/sight_hunter.animation.json");
+		return new ResourceLocation("azurelib", "animations/sight_hunter.animation.json");
 	}
 
 	@Override

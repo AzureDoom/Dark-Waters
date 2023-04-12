@@ -10,7 +10,7 @@ public class ManarawModel extends GeoModel<ManarawEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(ManarawEntity animatable) {
-		return DarkWatersMod.modResource("animations/manaraw.animation.json");
+		return new ResourceLocation("azurelib", "animations/manaraw.animation.json");
 	}
 
 	@Override

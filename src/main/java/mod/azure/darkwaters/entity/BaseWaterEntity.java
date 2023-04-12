@@ -64,7 +64,7 @@ public class BaseWaterEntity extends Monster implements NeutralMob {
 
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		setMaxUpStep(1.0f);
+		this.maxUpStep = 1.0f;
 		navigation = new AmphibiousNavigation(this, level);
 		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 1.0f, 0.5f, false);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);

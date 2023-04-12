@@ -96,12 +96,8 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 		return entity.getBbWidth() * 2.0f * (entity.getBbWidth() * 2.0f) + target.getBbWidth();
 	}
 
-	public double getPerceivedTargetDistanceSquareForMeleeAttack(E entity, LivingEntity target) {
-		return Math.max(entity.distanceToSqr(target.getMeleeAttackReferencePosition()), entity.distanceToSqr(target.position()));
-	}
-
 	public boolean isWithinMeleeAttackRange(E entity, LivingEntity target) {
-		double d = this.getPerceivedTargetDistanceSquareForMeleeAttack(entity, target);
+        double d = entity.distanceToSqr(target.getX(), target.getY(), target.getZ());
 		return d <= this.getMeleeAttackRangeSqr(entity, target);
 	}
 
