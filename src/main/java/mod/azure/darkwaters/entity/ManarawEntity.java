@@ -10,7 +10,7 @@ import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
-import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
@@ -51,11 +51,11 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	public ManarawEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersConfig.manaraw_exp;
+		this.xpReward = DarkWatersMod.config.manaraw_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.manaraw_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.manaraw_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.manaraw_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.manaraw_attack_damage);
 	}
 
 	@Override

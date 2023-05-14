@@ -2,7 +2,8 @@ package mod.azure.darkwaters;
 
 import java.awt.Color;
 
-import eu.midnightdust.lib.config.MidnightConfig;
+import dev.toma.configuration.Configuration;
+import dev.toma.configuration.config.format.ConfigFormats;
 import mod.azure.azurelib.items.AzureSpawnEgg;
 import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.effect.StormDarknessEffect;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
+	public static DarkWatersConfig config;
 	public static DarkWatersMobs MOBS;
 	public static DarkWatersSounds SOUNDS;
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
@@ -66,7 +68,7 @@ public class DarkWatersMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		MidnightConfig.init(MODID, DarkWatersConfig.class);
+		config = Configuration.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 		DarkWatersMobs.init();
 		SOUNDS = new DarkWatersSounds();
 		DarkWatersSpawning.addSpawnEntries();

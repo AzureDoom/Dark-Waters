@@ -11,7 +11,7 @@ import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
-import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
@@ -53,11 +53,11 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 
 	public AberrationEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersConfig.aberration_exp;
+		this.xpReward = DarkWatersMod.config.aberration_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.aberration_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.aberration_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.aberration_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.aberration_attack_damage);
 	}
 
 	@Override

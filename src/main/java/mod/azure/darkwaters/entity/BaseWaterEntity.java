@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.darkwaters.DarkWatersMod;
-import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.pathing.AmphibiousNavigation;
 import net.minecraft.core.BlockPos;
@@ -72,9 +71,9 @@ public class BaseWaterEntity extends Monster implements NeutralMob {
 	}
 
 	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((Level) world).isThundering() && DarkWatersConfig.require_storm_to_spawn == true)
+		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((Level) world).isThundering() && DarkWatersMod.config.require_storm_to_spawn == true)
 			return ((Level) world).isThundering() && world.getFluidState(pos).is(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).is(BiomeTags.IS_OCEAN);
-		else if (DarkWatersConfig.require_storm_to_spawn == false)
+		else if (DarkWatersMod.config.require_storm_to_spawn == false)
 			return world.getBiome(pos).is(BiomeTags.IS_OCEAN) && world.getFluidState(pos).is(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
 		else
 			return false;
@@ -177,7 +176,7 @@ public class BaseWaterEntity extends Monster implements NeutralMob {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isThundering() && DarkWatersConfig.require_storm_to_spawn == true)
+		if (!this.level.isThundering() && DarkWatersMod.config.require_storm_to_spawn == true)
 			aliveAfterStorm++;
 		if (aliveAfterStorm >= 1200)
 			this.kill();
