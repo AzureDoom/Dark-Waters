@@ -2,15 +2,11 @@ buildscript {
     repositories {
     	maven { url  = 'https://plugins.gradle.org/m2/' }
     }
-    dependencies {
-        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.0"
-    }
 }
 
 plugins {
     id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.0'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -37,31 +33,15 @@ repositories {
     maven { url "https://maven.parchmentmc.org" }
 }
 
-configurations {
-    shade
-}
-
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-    }
+    mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
-  	modImplementation 'mod.azure.azurelib:azurelib-fabric-1.19.4:1.0.12'
-	modImplementation 'dev.toma.configuration:Configuration:2.1.0'
-    shade group: 'dev.toma.configuration', name: 'Configuration', version: '2.1.0'
+  	modImplementation 'mod.azure.azurelib:azurelib-fabric-1.19.4:1.0.13'
 	modImplementation ("com.terraformersmc:modmenu:6.1.0-rc.4")
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-1.19.4:1.9"
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-1.19.4:1.9"
-}
-
-shadowJar {
-    configurations = [project.configurations.shade]
-    from sourceSets.main.output
-    duplicatesStrategy = 'exclude'
-    relocate 'dev.toma', 'mod.azure.darkwaters.shadowed.configuration'
-    classifier 'dev'
 }
 
 processResources {
@@ -88,15 +68,6 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
-}
-
-artifacts {
-    archives shadowJar
-}
-
-remapJar {
-    dependsOn(shadowJar)
-    inputFile = shadowJar.archiveFile
 }
 
 processResources {

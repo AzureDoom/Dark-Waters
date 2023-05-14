@@ -2,8 +2,8 @@ package mod.azure.darkwaters;
 
 import java.awt.Color;
 
-import dev.toma.configuration.Configuration;
-import dev.toma.configuration.config.format.ConfigFormats;
+import mod.azure.azurelib.AzureLibMod;
+import mod.azure.azurelib.config.format.ConfigFormats;
 import mod.azure.azurelib.items.AzureSpawnEgg;
 import mod.azure.darkwaters.config.DarkWatersConfig;
 import mod.azure.darkwaters.effect.StormDarknessEffect;
@@ -68,7 +68,7 @@ public class DarkWatersMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		config = Configuration.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
+		config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 		DarkWatersMobs.init();
 		SOUNDS = new DarkWatersSounds();
 		DarkWatersSpawning.addSpawnEntries();
