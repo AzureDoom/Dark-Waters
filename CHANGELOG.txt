@@ -1,6 +1,6 @@
-v.0.0.16
+v.0.0.17
 
-- Japanese Transalated added by mash1133
+- Moved from Midnight Lib to Configuration
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**

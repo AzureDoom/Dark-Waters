@@ -10,7 +10,7 @@ import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
-import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.sounds.SoundEvent;
@@ -51,11 +51,11 @@ public class MiraidEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 
 	public MiraidEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersConfig.miraid_exp;
+		this.xpReward = DarkWatersMod.config.miraid_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.miraid_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.miraid_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.miraid_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.miraid_attack_damage);
 	}
 
 	@Override

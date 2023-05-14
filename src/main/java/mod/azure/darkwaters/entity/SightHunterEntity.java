@@ -10,7 +10,7 @@ import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
-import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
@@ -51,7 +51,7 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 
 	public SightHunterEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersConfig.sighthunter_exp;
+		this.xpReward = DarkWatersMod.config.sighthunter_exp;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.sighthunter_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.sighthunter_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.sighthunter_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.sighthunter_attack_damage);
 	}
 
 	@Override

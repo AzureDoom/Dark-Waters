@@ -10,7 +10,7 @@ import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
-import mod.azure.darkwaters.config.DarkWatersConfig;
+import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
 import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
@@ -51,11 +51,11 @@ public class CraekenEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	public CraekenEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersConfig.craeken_exp;
+		this.xpReward = DarkWatersMod.config.craeken_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersConfig.craeken_health).add(Attributes.ATTACK_DAMAGE, DarkWatersConfig.craeken_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.craeken_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.craeken_attack_damage);
 	}
 
 	@Override

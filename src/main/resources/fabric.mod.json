@@ -23,9 +23,6 @@
 		],
 		"client": [
 			"mod.azure.darkwaters.client.DarkWatersClient"
-		],
-		"modmenu": [
-			"mod.azure.darkwaters.config.ModMenuDarkWaters"
 		]
 	},
 	"mixins": [
