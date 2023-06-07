@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -26,14 +27,21 @@ public class DarkWatersMobs {
 	public static EntityType<MiraidEntity> MIRAID;
 	public static EntityType<MiraidHallucinationEntity> MIRAID_HALLUCINATION;
 
+	private static <T extends Entity> EntityType<T> mob(String id, EntityType.EntityFactory<T> factory, float height, float width) {
+		final var type = FabricEntityTypeBuilder.<T>create(MobCategory.MONSTER, factory).dimensions(EntityDimensions.scalable(height, width)).fireImmune().trackedUpdateRate(1).trackRangeBlocks(90).build();
+		Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource(id), type);
+
+		return type;
+	}
+
 	public static void init() {
-		ABERRATION = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("aberration"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, AberrationEntity::new).dimensions(EntityDimensions.fixed(0.9f, 2.05F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		MANARAW = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("manaraw"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, ManarawEntity::new).dimensions(EntityDimensions.scalable(3.6f, 3.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		MOHAST = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("mohast"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, MohastEntity::new).dimensions(EntityDimensions.scalable(2.2f, 0.65F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		SIGHT_HUNTER = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("sight_hunter"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, SightHunterEntity::new).dimensions(EntityDimensions.scalable(4.6f, 1.45F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		CRAEKEN = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("craeken"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, CraekenEntity::new).dimensions(EntityDimensions.scalable(4.6f, 1.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		MIRAID = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("miraid"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, MiraidEntity::new).dimensions(EntityDimensions.fixed(4.6f, 2.95F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
-		MIRAID_HALLUCINATION = Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource("miraid_hallucination"), FabricEntityTypeBuilder.create(MobCategory.MONSTER, MiraidHallucinationEntity::new).dimensions(EntityDimensions.fixed(1.6f, 3.45F)).trackRangeBlocks(90).trackedUpdateRate(1).build());
+		ABERRATION = mob("aberration", AberrationEntity::new, 0.9f, 2.05F);
+		MANARAW = mob("manaraw", ManarawEntity::new, 3.6f, 3.95F);
+		MOHAST = mob("mohast", MohastEntity::new, 2.2f, 0.65F);
+		SIGHT_HUNTER = mob("sight_hunter", SightHunterEntity::new, 4.6f, 1.45F);
+		CRAEKEN = mob("craeken", CraekenEntity::new, 4.6f, 1.95F);
+		MIRAID = mob("miraid", MiraidEntity::new, 4.6f, 2.95F);
+		MIRAID_HALLUCINATION = mob("miraid_hallucination", MiraidHallucinationEntity::new, 1.6f, 3.45F);
 		FabricDefaultAttributeRegistry.register(ABERRATION, AberrationEntity.createMobAttributes());
 		FabricDefaultAttributeRegistry.register(MANARAW, ManarawEntity.createMobAttributes());
 		FabricDefaultAttributeRegistry.register(MOHAST, MohastEntity.createMobAttributes());

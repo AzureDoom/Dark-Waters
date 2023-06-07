@@ -27,9 +27,7 @@ import net.minecraft.world.item.ItemStack;
 public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
-	public static DarkWatersConfig config;
-	public static DarkWatersMobs MOBS;
-	public static DarkWatersSounds SOUNDS;
+	public static DarkWatersConfig config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
 	public static final CreativeModeTab GENERAL = FabricItemGroup.builder(modResource("itemgroup")).icon(() -> new ItemStack(DarkWatersMod.ABERRATION_SPAWN_EGG)).displayItems((context, entries) -> {
 		entries.accept(DarkWatersMod.ABERRATION_SPAWN_EGG);
@@ -70,8 +68,7 @@ public class DarkWatersMod implements ModInitializer {
 	public void onInitialize() {
 		config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 		DarkWatersMobs.init();
-		SOUNDS = new DarkWatersSounds();
-		DarkWatersSpawning.addSpawnEntries();
+		DarkWatersSounds.init();
 		EntityDataSerializers.registerSerializer(ATTACK_TYPE);
 		ABERRATION_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("aberration_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.ABERRATION, 0x150056, 0x826ccc));
 		MANARAW_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("manaraw_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.MANARAW, 0x181c59, 0x636b6d));
@@ -80,5 +77,6 @@ public class DarkWatersMod implements ModInitializer {
 		CRAEKEN_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("craeken_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.CRAEKEN, 0xada7a2, 0xcee3e3));
 		MIRAID_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("miraid_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.MIRAID, 0x5d5d6e, 0xd6d6d6));
 		Registry.register(BuiltInRegistries.MOB_EFFECT, modResource("storm_darkness"), STORMDARKNESS);
+		DarkWatersSpawning.addSpawnEntries();
 	}
 }
