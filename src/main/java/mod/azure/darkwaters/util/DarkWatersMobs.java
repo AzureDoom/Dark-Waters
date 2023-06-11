@@ -28,7 +28,7 @@ public class DarkWatersMobs {
 	public static EntityType<MiraidHallucinationEntity> MIRAID_HALLUCINATION;
 
 	private static <T extends Entity> EntityType<T> mob(String id, EntityType.EntityFactory<T> factory, float height, float width) {
-		final var type = FabricEntityTypeBuilder.<T>create(MobCategory.MONSTER, factory).dimensions(EntityDimensions.scalable(height, width)).fireImmune().trackedUpdateRate(1).trackRangeBlocks(90).build();
+		final var type = FabricEntityTypeBuilder.<T>create(MobCategory.AMBIENT, factory).dimensions(EntityDimensions.scalable(height, width)).fireImmune().trackedUpdateRate(1).trackRangeBlocks(90).build();
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, DarkWatersMod.modResource(id), type);
 
 		return type;

@@ -40,7 +40,7 @@ public class FogMixin {
 	}
 
 	@SuppressWarnings("unused")
-	@Inject(method = "setupColor\r\n" + "", at = @At("HEAD"))
+	@Inject(method = "setupColor", at = @At("HEAD"))
 	private static void stormRenderMixin(Camera camera, float tickDelta, ClientLevel world, int viewDistance, float skyDarkness, CallbackInfo ci) {
 		int af;
 		var d = (camera.getPosition().y - (double) world.getMinBuildHeight()) * world.getLevelData().getClearColorScale();

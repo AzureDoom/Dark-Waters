@@ -15,20 +15,24 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 
 public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
 	public static DarkWatersConfig config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
+	public static final TagKey<Biome> DARKWATER_BIOMES = TagKey.create(Registries.BIOME, DarkWatersMod.modResource("darkwaterbiomes"));
 	public static final CreativeModeTab GENERAL = FabricItemGroup.builder(modResource("itemgroup")).icon(() -> new ItemStack(DarkWatersMod.ABERRATION_SPAWN_EGG)).displayItems((context, entries) -> {
 		entries.accept(DarkWatersMod.ABERRATION_SPAWN_EGG);
 		entries.accept(DarkWatersMod.MANARAW_SPAWN_EGG);

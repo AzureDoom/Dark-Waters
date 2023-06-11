@@ -8,8 +8,6 @@ import mod.azure.darkwaters.DarkWatersMod;
 public class DarkWatersConfig {
 
 	@Configurable
-	public String[] darkwater_biomes = { "minecraft:deep_frozen_ocean", "minecraft:deep_cold_ocean", "minecraft:deep_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:frozen_ocean", "minecraft:ocean", "minecraft:cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" };
-	@Configurable
 	public boolean require_storm_to_spawn = true;
 	@Configurable
 	public int aberration_spawnweight = 10;
