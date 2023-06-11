@@ -137,7 +137,7 @@ public class MohastEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return r == 1 ? DarkWatersSounds.MOHAST_AMBIENT1 : DarkWatersSounds.MOHAST_AMBIENT2;
+		return this.getRandom().nextInt(0, 3) == 1 ? DarkWatersSounds.MOHAST_AMBIENT1 : DarkWatersSounds.MOHAST_AMBIENT2;
 	}
 
 	@Override
