@@ -137,7 +137,7 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return r == 1 ? DarkWatersSounds.MANARAW_AMBIENT1 : DarkWatersSounds.MANARAW_AMBIENT2;
+		return this.getRandom().nextInt(0, 3) == 1 ? DarkWatersSounds.MANARAW_AMBIENT1 : DarkWatersSounds.MANARAW_AMBIENT2;
 	}
 
 	@Override

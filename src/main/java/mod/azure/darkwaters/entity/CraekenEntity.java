@@ -150,7 +150,7 @@ public class CraekenEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return r == 1 ? DarkWatersSounds.CRAEKEN_HURT1 : DarkWatersSounds.CRAEKEN_HURT2;
+		return this.getRandom().nextInt(0, 3) == 1 ? DarkWatersSounds.CRAEKEN_HURT1 : DarkWatersSounds.CRAEKEN_HURT2;
 	}
 
 }
