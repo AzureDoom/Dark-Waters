@@ -17,10 +17,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 
 public class DarkWatersMod implements ModInitializer {
 
@@ -29,6 +31,7 @@ public class DarkWatersMod implements ModInitializer {
 	public static DarkWatersMobs MOBS;
 	public static DarkWatersSounds SOUNDS;
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
+	public static final TagKey<Biome> DARKWATER_BIOMES = TagKey.create(Registry.BIOME_REGISTRY, DarkWatersMod.modResource("darkwaterbiomes"));
 	public static final CreativeModeTab GENERAL = FabricItemGroupBuilder.build(modResource("itemgroup"), () -> new ItemStack(DarkWatersMod.ABERRATION_SPAWN_EGG));
 	public static final EntityDataSerializer<AttackType> ATTACK_TYPE = new EntityDataSerializer<>() {
 		@Override

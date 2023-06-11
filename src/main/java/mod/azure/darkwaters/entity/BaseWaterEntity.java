@@ -16,7 +16,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -35,15 +34,16 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public class BaseWaterEntity extends Monster implements NeutralMob {
+public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 
 	private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(BaseWaterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(BaseWaterEntity.class, EntityDataSerializers.INT);
@@ -70,13 +70,14 @@ public class BaseWaterEntity extends Monster implements NeutralMob {
 		setPathfindingMalus(BlockPathTypes.WATER, 0.0f);
 	}
 
-	public static boolean canSpawnInDarkWater(EntityType<? extends BaseWaterEntity> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		if (pos.getY() > 45 && pos.getY() < world.getSeaLevel() && ((Level) world).isThundering() && DarkWatersMod.config.require_storm_to_spawn == true)
-			return ((Level) world).isThundering() && world.getFluidState(pos).is(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL && world.getBiome(pos).is(BiomeTags.IS_OCEAN);
-		else if (DarkWatersMod.config.require_storm_to_spawn == false)
-			return world.getBiome(pos).is(BiomeTags.IS_OCEAN) && world.getFluidState(pos).is(FluidTags.WATER) && world.getDifficulty() != Difficulty.PEACEFUL;
-		else
+	public static boolean canSpawnInDarkWater(EntityType<? extends WaterAnimal> type, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL)
 			return false;
+		if ((reason != MobSpawnType.CHUNK_GENERATION && reason != MobSpawnType.NATURAL))
+			return world.getFluidState(pos.below()).is(FluidTags.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER);
+		if (DarkWatersMod.config.require_storm_to_spawn == true)
+			return ((Level) world).isThundering() && world.getFluidState(pos.below()).is(FluidTags.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER);
+		return world.getFluidState(pos.below()).is(FluidTags.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER);
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
