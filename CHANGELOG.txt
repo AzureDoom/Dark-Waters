@@ -1,6 +1,7 @@
-v.0.0.17HF
+v.0.0.18
 
-- Updated required AzureLib to fix crashing at startup.
+- Fixed Lang.
+- Fixed Mob Spawning.
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**
