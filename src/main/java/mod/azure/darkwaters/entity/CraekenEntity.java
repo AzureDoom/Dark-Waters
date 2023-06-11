@@ -113,14 +113,14 @@ public class CraekenEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 		super.tick();
 		if (attackProgress > 0) {
 			attackProgress--;
-			if (!level.isClientSide && attackProgress <= 0)
+			if (!level().isClientSide && attackProgress <= 0)
 				setCurrentAttackType(AttackType.NONE);
 		}
 
 		if (attackProgress == 0 && swinging)
 			attackProgress = 10;
 
-		if (!level.isClientSide && getCurrentAttackType() == AttackType.NONE)
+		if (!level().isClientSide && getCurrentAttackType() == AttackType.NONE)
 			setCurrentAttackType(switch (random.nextInt(4)) {
 			case 1 -> AttackType.GRAB;
 			default -> AttackType.ATTACK;

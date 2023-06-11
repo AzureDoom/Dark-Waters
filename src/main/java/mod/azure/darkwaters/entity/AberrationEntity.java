@@ -91,8 +91,7 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 	}
 
 	@Override
-	public void positionRider(Entity passenger) {
-		super.positionRider(passenger);
+	protected void positionRider(Entity passenger, MoveFunction moveFunction) {
 		if (passenger instanceof LivingEntity) {
 			var mob = (LivingEntity) passenger;
 			var random = new SplittableRandom();
@@ -128,14 +127,14 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 		super.tick();
 		if (attackProgress > 0) {
 			attackProgress--;
-			if (!level.isClientSide && attackProgress <= 0)
+			if (!level().isClientSide && attackProgress <= 0)
 				setCurrentAttackType(AttackType.NONE);
 		}
 
 		if (attackProgress == 0 && swinging)
 			attackProgress = 10;
 
-		if (!level.isClientSide && getCurrentAttackType() == AttackType.NONE)
+		if (!level().isClientSide && getCurrentAttackType() == AttackType.NONE)
 			setCurrentAttackType(AttackType.GRAB_ATTACK);
 	}
 

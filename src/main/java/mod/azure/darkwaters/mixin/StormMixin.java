@@ -36,16 +36,16 @@ public abstract class StormMixin extends LivingEntity {
 	public void stormMixin(CallbackInfo ci) {
 		SplittableRandom random = new SplittableRandom();
 		int r = random.nextInt(0, 4);
-		if (level.isThundering() && level.getBiomeManager().getBiome(blockPosition()).is(BiomeTags.IS_OCEAN)
+		if (level().isThundering() && level().getBiomeManager().getBiome(blockPosition()).is(BiomeTags.IS_OCEAN)
 				&& !this.abilities.instabuild) {
 			cooldown++;
 			this.addEffect(new MobEffectInstance(DarkWatersMod.STORMDARKNESS, 600, 0, true, false, false));
 			if (this.cooldown == 5) {
 				if (!this.isSilent()) {
-					this.level.playSound((Player) null, this.getX(), this.getY(), this.getZ(),
+					this.level().playSound((Player) null, this.getX(), this.getY(), this.getZ(),
 							r == 1 ? DarkWatersSounds.STORM_ABIENT1
 									: r == 2 ? DarkWatersSounds.STORM_ABIENT2 : DarkWatersSounds.STORM_ABIENT3,
-							SoundSource.MUSIC, level.isThundering() ? 0.75F : 0.0F, 1.0F);
+							SoundSource.MUSIC, level().isThundering() ? 0.75F : 0.0F, 1.0F);
 				}
 				this.cooldown = -500;
 			}

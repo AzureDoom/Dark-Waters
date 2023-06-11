@@ -17,8 +17,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
@@ -33,14 +35,7 @@ public class DarkWatersMod implements ModInitializer {
 	public static DarkWatersConfig config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
 	public static final TagKey<Biome> DARKWATER_BIOMES = TagKey.create(Registries.BIOME, DarkWatersMod.modResource("darkwaterbiomes"));
-	public static final CreativeModeTab GENERAL = FabricItemGroup.builder(modResource("itemgroup")).icon(() -> new ItemStack(DarkWatersMod.ABERRATION_SPAWN_EGG)).displayItems((context, entries) -> {
-		entries.accept(DarkWatersMod.ABERRATION_SPAWN_EGG);
-		entries.accept(DarkWatersMod.MANARAW_SPAWN_EGG);
-		entries.accept(DarkWatersMod.MOHAST_SPAWN_EGG);
-		entries.accept(DarkWatersMod.SIGHT_HUNTER_SPAWN_EGG);
-		entries.accept(DarkWatersMod.CRAEKEN_SPAWN_EGG);
-		entries.accept(DarkWatersMod.MIRAID_SPAWN_EGG);
-	}).build();
+	public static final ResourceKey<CreativeModeTab> GENERAL = ResourceKey.create(Registries.CREATIVE_MODE_TAB, DarkWatersMod.modResource("itemgroup"));
 	public static final EntityDataSerializer<AttackType> ATTACK_TYPE = new EntityDataSerializer<>() {
 		@Override
 		public void write(FriendlyByteBuf packetByteBuf, AttackType alienAttackType) {
@@ -81,6 +76,16 @@ public class DarkWatersMod implements ModInitializer {
 		CRAEKEN_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("craeken_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.CRAEKEN, 0xada7a2, 0xcee3e3));
 		MIRAID_SPAWN_EGG = Registry.register(BuiltInRegistries.ITEM, modResource("miraid_spawn_egg"), new AzureSpawnEgg(DarkWatersMobs.MIRAID, 0x5d5d6e, 0xd6d6d6));
 		Registry.register(BuiltInRegistries.MOB_EFFECT, modResource("storm_darkness"), STORMDARKNESS);
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, GENERAL, FabricItemGroup.builder().icon(() -> new ItemStack(DarkWatersMod.ABERRATION_SPAWN_EGG)) // icon
+				.title(Component.translatable("itemGroup.darkwaters.itemgroup")) // title
+				.displayItems((context, entries) -> {
+					entries.accept(DarkWatersMod.ABERRATION_SPAWN_EGG);
+					entries.accept(DarkWatersMod.MANARAW_SPAWN_EGG);
+					entries.accept(DarkWatersMod.MOHAST_SPAWN_EGG);
+					entries.accept(DarkWatersMod.SIGHT_HUNTER_SPAWN_EGG);
+					entries.accept(DarkWatersMod.CRAEKEN_SPAWN_EGG);
+					entries.accept(DarkWatersMod.MIRAID_SPAWN_EGG);
+				}).build()); // build() no longer registers by itself
 		DarkWatersSpawning.addSpawnEntries();
 	}
 }

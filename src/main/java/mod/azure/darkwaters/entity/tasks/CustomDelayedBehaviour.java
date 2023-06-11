@@ -50,7 +50,7 @@ public abstract class CustomDelayedBehaviour<E extends BaseWaterEntity> extends 
 
 	@Override
 	protected boolean shouldKeepRunning(E entity) {
-		return this.delayFinishedAt >= entity.level.getGameTime();
+		return this.delayFinishedAt >= entity.level().getGameTime();
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 	public BaseWaterEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
 		setMaxUpStep(1.0f);
-		navigation = new AmphibiousNavigation(this, level);
+		navigation = new AmphibiousNavigation(this, level());
 		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 1.0f, 0.5f, false);
 		this.lookControl = new SmoothSwimmingLookControl(this, 10);
 		setPathfindingMalus(BlockPathTypes.WATER, 0.0f);
@@ -177,7 +177,7 @@ public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isThundering() && DarkWatersMod.config.require_storm_to_spawn == true)
+		if (!this.level().isThundering() && DarkWatersMod.config.require_storm_to_spawn == true)
 			aliveAfterStorm++;
 		if (aliveAfterStorm >= 1200)
 			this.kill();
