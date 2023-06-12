@@ -1,7 +1,6 @@
-v.0.0.18
+v.0.0.19
 
-- Fixed Lang.
-- Fixed Mob Spawning.
+- Updated for 1.20.1
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**

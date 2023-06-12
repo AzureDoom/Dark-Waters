@@ -38,7 +38,7 @@ dependencies {
     mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
-  	modImplementation 'mod.azure.azurelib:azurelib-fabric-1.20:1.0.9'
+  	modImplementation 'mod.azure.azurelib:azurelib-fabric-1.20.1:1.0.15'
 	modImplementation ("com.terraformersmc:modmenu:7.0.0-beta.2")
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-1.20:1.11"
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-1.20:1.11"
@@ -99,7 +99,7 @@ if (file('key.properties').exists()) {
         	releaseType = "${curse_release}"
         	changelogType = 'text'
         	changelog = file('CHANGELOG.txt')
-			addGameVersion("1.20")
+			addGameVersion("1.20.1")
 			addGameVersion("Fabric")
 			addGameVersion("Java 17")
 
@@ -145,10 +145,10 @@ if (file('key.properties').exists()) {
 		token = modrinthProp.getProperty('modrinthKey')
 		projectId = 'pe7gyI14' 
 		versionNumber = project.mod_version 
-		versionName = 'Fabric/Quilt 1.20'
+		versionName = 'Fabric/Quilt 1.20.1'
 		uploadFile = remapJar 
 		changelog = rootProject.file("changelog.txt").text
-		gameVersions = ['1.20']
+		gameVersions = ['1.20.1']
 		loaders = ['fabric','quilt']
 		dependencies { 
         	required.project "azurelib"
