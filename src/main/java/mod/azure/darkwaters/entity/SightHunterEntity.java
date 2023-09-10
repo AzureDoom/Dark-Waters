@@ -51,7 +51,7 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 
 	public SightHunterEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.sighthunter_exp;
+		this.xpReward = DarkWatersMod.config.slighthunterconfigs.sighthunter_exp;
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.sighthunter_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.sighthunter_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.slighthunterconfigs.sighthunter_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.slighthunterconfigs.sighthunter_attack_damage);
 	}
 
 	@Override

@@ -51,11 +51,11 @@ public class CraekenEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	public CraekenEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.craeken_exp;
+		this.xpReward = DarkWatersMod.config.craekenconfigs.craeken_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.craeken_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.craeken_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.craekenconfigs.craeken_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.craekenconfigs.craeken_attack_damage);
 	}
 
 	@Override

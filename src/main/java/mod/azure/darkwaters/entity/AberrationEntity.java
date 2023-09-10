@@ -53,11 +53,11 @@ public class AberrationEntity extends BaseWaterEntity implements GeoEntity, Smar
 
 	public AberrationEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.aberration_exp;
+		this.xpReward = DarkWatersMod.config.aberrationconfigs.aberration_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.aberration_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.aberration_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.aberrationconfigs.aberration_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.aberrationconfigs.aberration_attack_damage);
 	}
 
 	@Override

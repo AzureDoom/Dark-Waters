@@ -51,11 +51,11 @@ public class ManarawEntity extends BaseWaterEntity implements GeoEntity, SmartBr
 
 	public ManarawEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.manaraw_exp;
+		this.xpReward = DarkWatersMod.config.manarawconfigs.manaraw_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.manaraw_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.manaraw_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.manarawconfigs.manaraw_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.manarawconfigs.manaraw_attack_damage);
 	}
 
 	@Override

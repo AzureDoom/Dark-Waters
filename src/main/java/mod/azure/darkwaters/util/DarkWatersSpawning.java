@@ -14,13 +14,12 @@ import net.minecraft.world.level.levelgen.Heightmap;
 public class DarkWatersSpawning {
 
 	public static void addSpawnEntries() {
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.ABERRATION, DarkWatersMod.config.aberration_spawnweight, 1, 1);
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.CRAEKEN, DarkWatersMod.config.craeken_spawnweight, 1, 1);
-//		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MANARAW, DarkWatersMod.config.manaraw_spawnweight, 1, 1);
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MIRAID, DarkWatersMod.config.miraid_spawnweight, 1, 1);
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MIRAID_HALLUCINATION, DarkWatersMod.config.miraid_spawnweight, 1, 1);
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MOHAST, DarkWatersMod.config.mohast_spawnweight, 1, 3);
-		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.SIGHT_HUNTER, DarkWatersMod.config.sighthunter_spawnweight, 1, 1);
+		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.ABERRATION, DarkWatersMod.config.aberrationconfigs.aberration_spawnweight, 1, 1);
+		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.CRAEKEN, DarkWatersMod.config.craekenconfigs.craeken_spawnweight, 1, 1);
+//		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MANARAW, DarkWatersMod.config.manarawconfigs.manaraw_spawnweight, 1, 1);
+		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MIRAID, DarkWatersMod.config.miraidconfigs.miraid_spawnweight, 1, 1);
+		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.MOHAST, DarkWatersMod.config.mohastconfigs.mohast_spawnweight, 1, 3);
+		BiomeModifications.addSpawn(BiomeSelectors.all().and(context -> parseBiomes(DarkWatersMod.DARKWATER_BIOMES, context)), MobCategory.AMBIENT, DarkWatersMobs.SIGHT_HUNTER, DarkWatersMod.config.slighthunterconfigs.sighthunter_spawnweight, 1, 1);
 		SpawnPlacements.register(DarkWatersMobs.ABERRATION, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnPlacements.register(DarkWatersMobs.CRAEKEN, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);
 		SpawnPlacements.register(DarkWatersMobs.MANARAW, SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseWaterEntity::canSpawnInDarkWater);

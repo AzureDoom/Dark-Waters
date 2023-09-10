@@ -51,11 +51,11 @@ public class MohastEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 
 	public MohastEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.mohast_exp;
+		this.xpReward = DarkWatersMod.config.mohastconfigs.mohast_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.mohast_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.mohast_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.mohastconfigs.mohast_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.mohastconfigs.mohast_attack_damage);
 	}
 
 	@Override

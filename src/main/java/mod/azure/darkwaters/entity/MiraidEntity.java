@@ -51,11 +51,11 @@ public class MiraidEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 
 	public MiraidEntity(EntityType<? extends BaseWaterEntity> entityType, Level world) {
 		super(entityType, world);
-		this.xpReward = DarkWatersMod.config.miraid_exp;
+		this.xpReward = DarkWatersMod.config.miraidconfigs.miraid_exp;
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
-		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.miraid_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.miraid_attack_damage);
+		return BaseWaterEntity.createMobAttributes().add(Attributes.MAX_HEALTH, DarkWatersMod.config.miraidconfigs.miraid_health).add(Attributes.ATTACK_DAMAGE, DarkWatersMod.config.miraidconfigs.miraid_attack_damage);
 	}
 
 	@Override
