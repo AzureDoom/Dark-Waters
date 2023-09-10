@@ -18,9 +18,9 @@ import com.modrinth.minotaur.dependencies.ModDependency
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+archivesBaseName = project.modName
+version = project.modVersion
+group = project.mavenGroup
 
 repositories {
 	maven { url "https://cfa2.cursemaven.com" }
@@ -34,14 +34,14 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	minecraft "com.mojang:minecraft:${project.minecraftVersion}"
     mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabricVersion}"
-  	modImplementation "mod.azure.azurelib:azurelib-fabric-1.20.1:1.0.28"
-	modImplementation "com.terraformersmc:modmenu:7.2.1"
-	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-1.20.1:1.12"
-	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-1.20.1:1.12"
+  	modImplementation "mod.azure.azurelib:azurelib-fabric-${project.minecraftVersion}:${project.azurelibVersion}"
+	modImplementation "com.terraformersmc:modmenu:${project.modmenuVersion}"
+	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${project.minecraftVersion}:${project.sblVersion}"
+	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${project.minecraftVersion}:${project.sblVersion}"
 }
 
 processResources {
@@ -95,11 +95,11 @@ if (file('key.properties').exists()) {
 
     	project {
         	apiKey = curseProp.getProperty('curseKey')
-        	id = "${curse_id}"
-        	releaseType = "${curse_release}"
+        	id = "${curseID}"
+        	releaseType = "${releaseStatus}"
         	changelogType = 'text'
         	changelog = file('CHANGELOG.txt')
-			addGameVersion("1.20.1")
+			addGameVersion("${project.minecraftVersion}")
 			addGameVersion("Fabric")
 			addGameVersion("Java 17")
 
@@ -121,21 +121,6 @@ if (file('key.properties').exists()) {
     }
 }
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-	repositories {
-	}
-}
-
 if (file('key.properties').exists()) {
 	modrinth {
 		def modrinthProp = new Properties()
@@ -143,19 +128,17 @@ if (file('key.properties').exists()) {
 		modrinthProp.load(secretPropsFile.newInputStream())
 		
 		token = modrinthProp.getProperty('modrinthKey')
-		projectId = 'pe7gyI14' 
-		versionNumber = project.mod_version 
-		versionName = 'Fabric/Quilt 1.20.1'
+		projectId = "${modrinthID}"
+		versionNumber = project.modVersion 
 		uploadFile = remapJar 
 		changelog = rootProject.file("changelog.txt").text
-		gameVersions = ['1.20.1']
+		gameVersions = ["${project.minecraftVersion}"]
 		loaders = ['fabric','quilt']
 		dependencies { 
         	required.project "azurelib"
         	required.project "smartbrainlib"
         	required.project "fabric-api"
             optional.project "modmenu"
-            optional.project "rei"
    		}
 	}
 }
