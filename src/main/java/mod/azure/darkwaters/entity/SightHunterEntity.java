@@ -76,12 +76,15 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 
 	@Override
 	public BrainActivityGroup<SightHunterEntity> getIdleTasks() {
-		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<SightHunterEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetRandomLookTarget<>()), new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1), new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<SightHunterEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || (target instanceof Player player && (player.isCreative() || player.isSpectator()))), new SetRandomLookTarget<>()), new OneRandomBehaviour<>(new SetRandomWalkTarget<>().speedModifier(1), new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
 	}
 
 	@Override
 	public BrainActivityGroup<SightHunterEntity> getFightTasks() {
-		return BrainActivityGroup.fightTasks(new InvalidateAttackTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new WaterMeleeAttack<>(5).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
+		return BrainActivityGroup.fightTasks(
+				new InvalidateAttackTarget<>().stopIf(target -> !target.isAlive() || (target instanceof Player player && (player.isCreative() || player.isSpectator()))), 
+				new SetWalkTargetToAttackTarget<>().speedMod((owner, target) -> 1.5f), 
+				new WaterMeleeAttack<>(5).whenStarting(entity -> setAggressive(true)).whenStarting(entity -> setAggressive(false)));
 	}
 
 	public static AttributeSupplier.Builder createMobAttributes() {
@@ -97,10 +100,8 @@ public class SightHunterEntity extends BaseWaterEntity implements GeoEntity, Sma
 				return event.setAndContinue(RawAnimation.begin().then(AttackType.animationMappings.get(getCurrentAttackType()), LoopType.PLAY_ONCE));
 			if (event.isMoving() && !isDead && !isAttacking)
 				return event.setAndContinue(RawAnimation.begin().thenLoop("moving"));
-			if (isDead)
-				return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
 			return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
-		}));
+		}).triggerableAnim("attack", RawAnimation.begin().then("rush_attack", LoopType.PLAY_ONCE)).triggerableAnim("death", RawAnimation.begin().thenPlayAndHold("death")));
 	}
 
 	@Override

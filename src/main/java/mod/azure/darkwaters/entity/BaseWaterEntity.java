@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import mod.azure.azurelib.animatable.GeoEntity;
 import mod.azure.azurelib.core.animation.Animation.LoopType;
 import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.darkwaters.DarkWatersMod;
@@ -43,7 +44,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
+public abstract class BaseWaterEntity extends WaterAnimal implements NeutralMob, GeoEntity {
 
 	private static final EntityDataAccessor<Integer> ANGER_TIME = SynchedEntityData.defineId(BaseWaterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(BaseWaterEntity.class, EntityDataSerializers.INT);
@@ -236,6 +237,7 @@ public class BaseWaterEntity extends WaterAnimal implements NeutralMob {
 	@Override
 	protected void tickDeath() {
 		++this.deathTime;
+		this.triggerAnim("idle_controller", "death");
 		if (this.deathTime == 35) {
 			this.remove(Entity.RemovalReason.KILLED);
 			this.dropExperience();

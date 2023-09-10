@@ -12,6 +12,7 @@ import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.util.AzureLibUtil;
 import mod.azure.darkwaters.DarkWatersMod;
 import mod.azure.darkwaters.entity.helper.AttackType;
+import mod.azure.darkwaters.entity.tasks.WaterMeleeAttack;
 import mod.azure.darkwaters.util.DarkWatersSounds;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -29,7 +30,6 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
@@ -80,13 +80,16 @@ public class MiraidEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 
 	@Override
 	public BrainActivityGroup<MiraidEntity> getIdleTasks() {
-		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<MiraidEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetRandomLookTarget<>()),
+		return BrainActivityGroup.idleTasks(new FirstApplicableBehaviour<MiraidEntity>(new TargetOrRetaliate<>(), new SetPlayerLookTarget<>().stopIf(target -> !target.isAlive() || (target instanceof Player player && (player.isCreative() || player.isSpectator()))), new SetRandomLookTarget<>()),
 				new OneRandomBehaviour<>(new SetRandomWalkTarget<>().dontAvoidWater().setRadius(20).speedModifier(1).stopIf(mob -> this.isAggressive()), new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)).stopIf(mob -> this.isAggressive())));
 	}
 
 	@Override
 	public BrainActivityGroup<MiraidEntity> getFightTasks() {
-		return BrainActivityGroup.fightTasks(new InvalidateAttackTarget<>().invalidateIf((entity, target) -> !target.isAlive() || target instanceof Player && ((Player) target).isCreative()), new SetWalkTargetToAttackTarget<>().speedMod(1.5F), new AnimatableMeleeAttack<>(10));
+		return BrainActivityGroup.fightTasks(
+				new InvalidateAttackTarget<>().stopIf(target -> !target.isAlive() || (target instanceof Player player && (player.isCreative() || player.isSpectator()))), 
+				new SetWalkTargetToAttackTarget<>().speedMod((owner, target) -> 1.5f), 
+				new WaterMeleeAttack<>(10));
 	}
 
 	@Override
@@ -94,14 +97,13 @@ public class MiraidEntity extends BaseWaterEntity implements GeoEntity, SmartBra
 		var isAttacking = this.swinging;
 		var isDead = this.dead || this.getHealth() < 0.01 || this.isDeadOrDying();
 		controllers.add(new AnimationController<>(this, "idle_controller", 0, event -> {
-			if (this.swinging && !isDead)
-				return event.setAndContinue(RawAnimation.begin().then(AttackType.animationMappings.get(getCurrentAttackType()), LoopType.PLAY_ONCE));
 			if (event.isMoving() && !isDead && !isAttacking)
 				return event.setAndContinue(RawAnimation.begin().thenLoop("running"));
-			if (isDead)
-				return event.setAndContinue(RawAnimation.begin().thenPlayAndHold("death"));
 			return event.setAndContinue(RawAnimation.begin().thenLoop("idle"));
-		}));
+		}).triggerableAnim("attack", RawAnimation.begin().then("attack", LoopType.PLAY_ONCE))
+				.triggerableAnim("grab", RawAnimation.begin().then("grab", LoopType.PLAY_ONCE))
+				.triggerableAnim("bite", RawAnimation.begin().then("bite", LoopType.PLAY_ONCE))
+				.triggerableAnim("death", RawAnimation.begin().thenPlayAndHold("death")));
 	}
 
 	@Override

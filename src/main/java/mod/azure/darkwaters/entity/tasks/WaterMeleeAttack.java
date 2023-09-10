@@ -93,7 +93,7 @@ public class WaterMeleeAttack<E extends BaseWaterEntity> extends CustomDelayedBe
 	public double getMeleeAttackRangeSqr(E entity, LivingEntity target) {
 		if (entity instanceof ManarawEntity)
 			return entity.getBbWidth() * 4.0f * (entity.getBbWidth() * 4.0f) + target.getBbWidth();
-		return entity.getBbWidth() * 2.0f * (entity.getBbWidth() * 2.0f) + target.getBbWidth();
+		return entity.getBbWidth() * 3.0f * (entity.getBbWidth() * 3.0f) + target.getBbWidth();
 	}
 
 	public double getPerceivedTargetDistanceSquareForMeleeAttack(E entity, LivingEntity target) {

@@ -3,6 +3,8 @@ package mod.azure.darkwaters.entity.tasks;
 import java.util.function.Consumer;
 
 import mod.azure.darkwaters.entity.BaseWaterEntity;
+import mod.azure.darkwaters.entity.CraekenEntity;
+import mod.azure.darkwaters.entity.MiraidEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
@@ -39,6 +41,20 @@ public abstract class CustomDelayedBehaviour<E extends BaseWaterEntity> extends 
 			super.start(level, entity, gameTime);
 			doDelayedAction(entity);
 		}
+		if (entity instanceof MiraidEntity miraid)
+			miraid.triggerAnim("idle_controller", switch (miraid.getRandom().nextInt(3)) {
+			case 0 -> "grab";
+			case 1 -> "bite";
+			case 2 -> "attack";
+			default -> "grab";
+			});
+		else if (entity instanceof CraekenEntity craeken)
+			craeken.triggerAnim("idle_controller", switch (craeken.getRandom().nextInt(2)) {
+			case 0 -> "attack";
+			default -> "grab";
+			});
+		else
+			entity.triggerAnim("idle_controller", "attack");
 	}
 
 	@Override
