@@ -128,11 +128,11 @@ if (file('key.properties').exists()) {
 		modrinthProp.load(secretPropsFile.newInputStream())
 		
 		token = modrinthProp.getProperty('modrinthKey')
-		projectId = ${modrinthID}
+		projectId = project.modrinthID
 		versionNumber = project.modVersion 
 		uploadFile = remapJar 
 		changelog = rootProject.file("changelog.txt").text
-		gameVersions = [${project.minecraftVersion}]
+		gameVersions = [project.minecraftVersion]
 		loaders = ['fabric','quilt']
 		dependencies { 
         	required.project "azurelib"
