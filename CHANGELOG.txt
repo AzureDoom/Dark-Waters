@@ -1,11 +1,6 @@
-v.0.0.20
+v.0.0.20b
 
-- Limit the mod to 1.20.1
-- Requires at least AzureLib 1.0.28 and SBL 1.12
-- Rewrote config.
-- Fixed attack animations not triggering.
-- Fixed attack range.
-- Fixed Spectator players not being filtered for attacks.
+- Updates bundled AzureLib version to latest.
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**
