@@ -1,6 +1,8 @@
-v.0.0.20b
+v.0.0.21
 
-- Updates bundled AzureLib version to latest.
+- Updates required AzureLib version to v1.0.32.
+- Fixes early init crash with Connector.
+- Adds AzureLib to Connector builds required mods list, no longer bundled as you can use the Forge version safely with Fabric mods.
 
 **Mob AI is no where near finished and is just basic for now**
 **All Animations yet not implemented to the mobs, this will be done with AI updates**
