@@ -32,7 +32,7 @@ import net.minecraft.world.level.biome.Biome;
 public class DarkWatersMod implements ModInitializer {
 
 	public static final String MODID = "darkwaters";
-	public static DarkWatersConfig config = AzureLibMod.registerConfig(DarkWatersConfig.class, ConfigFormats.json()).getConfigInstance();
+	public static DarkWatersConfig config;
 	public static final MobEffect STORMDARKNESS = new StormDarknessEffect(MobEffectCategory.BENEFICIAL, new Color(0, 0, 0).getRGB());
 	public static final TagKey<Biome> DARKWATER_BIOMES = TagKey.create(Registries.BIOME, DarkWatersMod.modResource("darkwaterbiomes"));
 	public static final ResourceKey<CreativeModeTab> GENERAL = ResourceKey.create(Registries.CREATIVE_MODE_TAB, DarkWatersMod.modResource("itemgroup"));
