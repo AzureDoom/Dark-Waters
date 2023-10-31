@@ -1,6 +1,6 @@
-v.0.0.21
+v.0.0.22
 
-- Updates required AzureLib version to v1.0.32.
+- Updates required AzureLib version to v2.0.3.
 - Fixes early init crash with Connector.
 - Adds AzureLib to Connector builds required mods list, no longer bundled as you can use the Forge version safely with Fabric mods.
 
